@@ -3,7 +3,10 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"/>
-  <title>VỊ TRÍ SẢN PHẨM</title>
+  <title>VỊ TRÍ + TỒN KHO</title>
+
+  <!-- Excel reader (SheetJS) -->
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.19.3/dist/xlsx.full.min.js"></script>
 
   <style>
     :root{
@@ -32,8 +35,9 @@
     }
     .wrap{max-width:1100px;margin:0 auto}
     .top{
-      display:flex; gap:12px; align-items:center; justify-content:space-between;
+      display:flex; gap:12px; align-items:flex-start; justify-content:space-between;
       margin-bottom:12px;
+      flex-wrap:wrap;
     }
     .brand{display:flex; gap:10px; align-items:center;}
     .logo{
@@ -42,9 +46,19 @@
       box-shadow: 0 12px 25px rgba(25,118,210,.22);
       display:grid;place-items:center;
       color:#fff; font-weight:900;
+      flex: 0 0 auto;
     }
     .title h1{font-size:18px;margin:0}
     .title p{margin:2px 0 0; color:var(--muted); font-size:13px}
+
+    .topRight{
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+      align-items:center;
+      justify-content:flex-end;
+    }
+
     .pill{
       padding:6px 10px;border-radius:999px;
       background:#f1f5f9;border:1px solid var(--border);
@@ -55,6 +69,7 @@
     .ok{background:#e8f7ee; color:#14532d; border-color: rgba(27,94,32,.2)}
     .warn{background:#fff4e5; color:#7c2d12; border-color: rgba(239,108,0,.25)}
     .bad{background:#ffe8e8; color:#7f1d1d; border-color: rgba(211,50,47,.25)}
+
     .tabs{
       display:flex; gap:8px; flex-wrap:wrap;
       margin-bottom:12px;
@@ -73,6 +88,7 @@
       box-shadow: 0 10px 25px rgba(25,118,210,.12);
       background: linear-gradient(135deg, rgba(25,118,210,.1), rgba(100,181,246,.1));
     }
+
     .row{display:grid; gap:12px}
     @media (min-width:980px){
       .row{grid-template-columns: 1fr 1fr;}
@@ -142,7 +158,6 @@
     .actions button{padding:9px 10px;border-radius:12px;font-weight:900;font-size:13px;}
     .small{font-size:12px;color:var(--muted)}
     .mono{font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;}
-
     .grid2{display:grid; gap:10px; grid-template-columns:1fr;}
     @media (min-width:520px){ .grid2{grid-template-columns:1fr 1fr;} }
 
@@ -188,7 +203,7 @@
       padding:10px 10px;
       background:#f8fafc;
       cursor:pointer;
-      min-height:54px;
+      min-height:64px;
       display:flex;
       flex-direction:column;
       gap:6px;
@@ -196,7 +211,21 @@
     }
     .cell .pos{
       font-size:12px; color:var(--muted); font-weight:900;
+      display:flex; align-items:center; justify-content:space-between; gap:8px;
     }
+    .badge{
+      font-size:11px;
+      font-weight:900;
+      padding:2px 8px;
+      border-radius:999px;
+      border:1px solid var(--border);
+      background:#fff;
+      color:var(--muted);
+      white-space:nowrap;
+    }
+    .badge.ok{background:#e8f7ee; color:#14532d; border-color: rgba(27,94,32,.2)}
+    .badge.warn{background:#fff4e5; color:#7c2d12; border-color: rgba(239,108,0,.25)}
+    .badge.bad{background:#ffe8e8; color:#7f1d1d; border-color: rgba(211,50,47,.25)}
     .cell .pname{
       font-size:12.5px; font-weight:900;
       line-height:1.15;
@@ -205,6 +234,11 @@
       -webkit-line-clamp:2;
       -webkit-box-orient:vertical;
       overflow:hidden;
+    }
+    .cell .qtyline{
+      font-size:12px;
+      font-weight:900;
+      color:var(--muted);
     }
     .cell.empty .pname{color:var(--muted); font-weight:800}
     .cell.filled{
@@ -271,6 +305,16 @@
       font-weight:900;
     }
     .toggle input{width:auto}
+
+    /* Stock mini panel */
+    .stockPanel{
+      display:flex; gap:8px; flex-wrap:wrap; align-items:center; justify-content:flex-end;
+    }
+    .stockPanel button{
+      padding:10px 12px;
+      border-radius:14px;
+      font-weight:900;
+    }
   </style>
 </head>
 
@@ -280,11 +324,20 @@
     <div class="brand">
       <div class="logo">VT</div>
       <div class="title">
-        <h1>Vị trí sản phẩm (Kệ → Mâm → Vị trí)</h1>
-        <p>Gán nhanh theo thứ tự + mâm dạng lưới vị trí.</p>
+        <h1>Vị trí sản phẩm + Tồn kho</h1>
+        <p>Upload tồn kho (CSV/Excel) → hiển thị tồn ngay trên mâm (grid + list).</p>
       </div>
     </div>
-    <div class="pill" id="statusPill">Chưa có dữ liệu</div>
+
+    <div class="topRight">
+      <div class="stockPanel">
+        <button class="primary" id="uploadStockBtn">⬆️ Upload tồn kho</button>
+        <button class="ghost" id="clearStockBtn">🧹 Bỏ tồn</button>
+        <input id="stockFile" type="file" accept=".csv,.xlsx,.xls" class="hidden" />
+      </div>
+      <div class="pill" id="stockPill">Tồn: chưa có file</div>
+      <div class="pill" id="statusPill">Chưa có dữ liệu</div>
+    </div>
   </div>
 
   <div class="tabs">
@@ -297,7 +350,7 @@
   <!-- LOOKUP -->
   <div id="tab-lookup" class="card">
     <h2>Tra cứu vị trí theo tên sản phẩm</h2>
-    <p class="hint">Gõ tên (có thể gõ một phần). Kết quả sẽ hiện vị trí chính xác: Kệ • Mâm • Vị trí.</p>
+    <p class="hint">Gõ tên (có thể gõ một phần). Nếu có file tồn kho, kết quả cũng sẽ hiện “Tồn”.</p>
 
     <div class="grid2">
       <div>
@@ -371,6 +424,33 @@
           <button class="danger" id="trayClearBtn">🧹 Xoá toàn bộ SP trong mâm</button>
         </div>
 
+        <div class="divider"></div>
+
+        <h2>Thiết lập cột tồn kho (nếu tool đoán sai)</h2>
+        <p class="hint">Upload file tồn kho ở nút trên cùng. Sau đó chọn cột đúng rồi bấm “Tạo danh mục tồn”.</p>
+
+        <div class="grid2">
+          <div>
+            <label>Cột tên sản phẩm</label>
+            <select id="stockColName" disabled>
+              <option value="">(Chưa có dữ liệu)</option>
+            </select>
+          </div>
+          <div>
+            <label>Cột số tồn</label>
+            <select id="stockColQty" disabled>
+              <option value="">(Chưa có dữ liệu)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="btns">
+          <button class="primary" id="buildStockBtn" disabled>✅ Tạo danh mục tồn</button>
+          <button class="ghost" id="refreshFromStockBtn" disabled>🔄 Cập nhật hiển thị</button>
+        </div>
+
+        <p class="small" id="stockInfo" style="margin-top:10px;"></p>
+
         <p class="small" id="layoutInfo" style="margin-top:10px;"></p>
       </div>
 
@@ -378,6 +458,7 @@
         <h2>Mâm dạng lưới vị trí</h2>
         <p class="hint">
           Chạm vào ô để chọn vị trí. Sau đó bấm <b>Gán nhanh</b> để gán từ ô đó (hoặc từ vị trí trống tiếp theo).
+          Nếu có tồn kho, mỗi ô sẽ hiện tồn của sản phẩm.
         </p>
 
         <div class="gridWrap">
@@ -441,7 +522,7 @@
         <textarea id="productTextarea" placeholder="Dán danh sách sản phẩm vào đây..."></textarea>
         <div class="btns">
           <button class="primary" id="addProductsBtn">✅ Thêm / cập nhật danh sách</button>
-          <button class="ghost" id="importCSVBtn">⬆️ Import CSV</button>
+          <button class="ghost" id="importCSVBtn">⬆️ Import CSV (tên SP)</button>
           <input id="csvFile" type="file" accept=".csv" class="hidden" />
           <button class="danger" id="clearProductsBtn">🗑️ Xoá danh sách SP</button>
         </div>
@@ -542,7 +623,7 @@
 /* =========================
    Data model
 ========================= */
-const LS_KEY = "vitri_sanpham_v2_grid";
+const LS_KEY = "vitri_sanpham_v3_with_stock";
 
 function removeAccents(str){
   return (str || "")
@@ -564,11 +645,84 @@ function toInt(v){
   const n = parseInt(String(v ?? "").trim(), 10);
   return Number.isFinite(n) ? n : null;
 }
+function toNumber(v){
+  if(v === null || v === undefined) return NaN;
+  const s0 = String(v).trim();
+  if(!s0) return NaN;
+
+  // remove spaces
+  const s = s0.replace(/\s+/g,"");
+
+  // handle Việt: 1.234 -> 1234 (khi đúng format nhóm 3)
+  const vn = /^\d{1,3}(\.\d{3})+$/.test(s) ? s.replace(/\./g,'') : s;
+
+  // remove commas
+  const clean = vn.replace(/,/g,'');
+
+  const n = Number(clean);
+  return Number.isFinite(n) ? n : NaN;
+}
+
+/* =========================
+   Stock file parsers
+========================= */
+function parseCSV(text){
+  const lines = text.replace(/\r/g,'').split('\n').filter(l=>l.trim().length>0);
+  if(lines.length===0) return {headers:[], rows:[]};
+
+  const parseLine = (line)=>{
+    const out=[];
+    let cur='', inQ=false;
+    for(let i=0;i<line.length;i++){
+      const ch=line[i];
+      if(ch === '"' ){
+        if(inQ && line[i+1] === '"'){ cur += '"'; i++; }
+        else inQ = !inQ;
+      } else if(ch === ',' && !inQ){
+        out.push(cur); cur='';
+      } else {
+        cur += ch;
+      }
+    }
+    out.push(cur);
+    return out.map(x=>x.trim());
+  };
+
+  const h = parseLine(lines[0]);
+  const rs = [];
+  for(let i=1;i<lines.length;i++){
+    const cols = parseLine(lines[i]);
+    const obj = {};
+    for(let j=0;j<h.length;j++) obj[h[j]] = cols[j] ?? '';
+    rs.push(obj);
+  }
+  return {headers:h, rows:rs};
+}
+
+function parseExcel(arrayBuffer){
+  const wb = XLSX.read(arrayBuffer, {type:'array'});
+  const sheetName = wb.SheetNames[0];
+  const ws = wb.Sheets[sheetName];
+  const json = XLSX.utils.sheet_to_json(ws, {defval:''});
+  const hs = json.length ? Object.keys(json[0]) : [];
+  return {headers:hs, rows:json};
+}
 
 let state = {
   products: [], // [{id, name, key}]
   shelves: [],  // [{id, name, positionsPerTray, trays:[{id,name, slots:[{pos, productKey}]}]}]
-  locIndex: {}  // productKey -> {shelfId, trayId, pos}
+  locIndex: {}, // productKey -> {shelfId, trayId, pos}
+
+  stock: {
+    // map: productKey -> qty
+    index: {},
+    fileName: "",
+    updatedAt: "",
+    colName: "",
+    colQty: "",
+    rowsCount: 0,
+    keysCount: 0
+  }
 };
 
 function load(){
@@ -579,6 +733,8 @@ function load(){
       state.products ??= [];
       state.shelves ??= [];
       state.locIndex ??= {};
+      state.stock ??= {index:{}, fileName:"", updatedAt:"", colName:"", colQty:"", rowsCount:0, keysCount:0};
+      state.stock.index ??= {};
     }
   }catch(e){}
 }
@@ -593,6 +749,7 @@ function save(){
 const $ = (id)=>document.getElementById(id);
 
 const statusPill = $("statusPill");
+const stockPill  = $("stockPill");
 function refreshStatus(){
   const p = state.products.length;
   const s = state.shelves.length;
@@ -600,7 +757,19 @@ function refreshStatus(){
 
   statusPill.className = "pill " + (a ? "ok" : (p || s ? "warn" : ""));
   statusPill.textContent = `SP: ${p} • Kệ: ${s} • Đã gán: ${a}`;
-  $("backupInfo").textContent = `products=${p}, shelves=${s}, assigned=${a}, key=${LS_KEY}`;
+
+  const stockKeys = Object.keys(state.stock.index || {}).length;
+  if(stockKeys){
+    stockPill.className = "pill ok";
+    const time = state.stock.updatedAt ? new Date(state.stock.updatedAt).toLocaleString() : "";
+    stockPill.textContent = `Tồn: ${stockKeys} SP • ${state.stock.fileName || "file"} ${time ? "• " + time : ""}`;
+  }else{
+    stockPill.className = "pill";
+    stockPill.textContent = "Tồn: chưa có file";
+  }
+
+  $("backupInfo").textContent =
+    `products=${p}, shelves=${s}, assigned=${a}, stockKeys=${stockKeys}, key=${LS_KEY}`;
 }
 
 let toastTimer=null;
@@ -618,6 +787,24 @@ function escapeHtml(s){
     .replaceAll(">","&gt;").replaceAll('"',"&quot;").replaceAll("'","&#039;");
 }
 
+function qtyClass(q){
+  if(q === null) return "";
+  if(!Number.isFinite(q)) return "";
+  if(q <= 0) return "bad";
+  if(q < 5) return "warn";
+  return "ok";
+}
+function fmtQty(q){
+  if(q === null || q === undefined) return "—";
+  if(!Number.isFinite(q)) return "—";
+  return String(q);
+}
+function getStockQtyByKey(productKey){
+  const idx = state.stock.index || {};
+  if(productKey in idx) return idx[productKey];
+  return null;
+}
+
 /* =========================
    Tabs
 ========================= */
@@ -633,6 +820,160 @@ document.querySelectorAll(".tab").forEach(tab=>{
     });
     renderAll();
   });
+});
+
+/* =========================
+   Stock upload + mapping
+========================= */
+let stockRawRows = [];
+let stockHeaders = [];
+
+function setStockInfo(text, type=""){
+  const el = $("stockInfo");
+  el.innerHTML = text;
+  el.className = "small " + (type ? type : "");
+}
+
+function fillStockSelects(headers){
+  stockHeaders = headers.slice();
+  const colName = $("stockColName");
+  const colQty  = $("stockColQty");
+
+  const fill = (sel)=>{
+    sel.innerHTML = "";
+    const opt0 = document.createElement("option");
+    opt0.value = ""; opt0.textContent = "(Chọn cột)";
+    sel.appendChild(opt0);
+    headers.forEach(h=>{
+      const op = document.createElement("option");
+      op.value = h; op.textContent = h;
+      sel.appendChild(op);
+    });
+  };
+  fill(colName);
+  fill(colQty);
+
+  colName.disabled = false;
+  colQty.disabled  = false;
+  $("buildStockBtn").disabled = false;
+  $("refreshFromStockBtn").disabled = false;
+
+  // auto guess
+  const normH = headers.map(h=>({h, t: removeAccents(String(h)).toLowerCase()}));
+  const pickName = normH.find(x =>
+    (x.t.includes("ten") && (x.t.includes("sp") || x.t.includes("san") || x.t.includes("product") || x.t.includes("hang") || x.t.includes("name")))
+  ) || normH.find(x=> x.t.includes("ten") || x.t.includes("name") || x.t.includes("product"));
+
+  const pickQty = normH.find(x =>
+    x.t.includes("ton") || x.t.includes("qty") || x.t.includes("so luong") || x.t.includes("stock") || x.t === "sl"
+  );
+
+  if(pickName) colName.value = pickName.h;
+  if(pickQty)  colQty.value  = pickQty.h;
+
+  // load previous picks if exist
+  if(state.stock.colName && headers.includes(state.stock.colName)) colName.value = state.stock.colName;
+  if(state.stock.colQty && headers.includes(state.stock.colQty)) colQty.value   = state.stock.colQty;
+
+  setStockInfo(`Đã nạp dữ liệu tồn: <b>${headers.length}</b> cột • <b>${stockRawRows.length}</b> dòng. Chọn cột rồi bấm <b>Tạo danh mục tồn</b>.`, "ok");
+}
+
+function buildStockIndex(){
+  const nameCol = $("stockColName").value;
+  const qtyCol  = $("stockColQty").value;
+
+  if(!nameCol || !qtyCol){
+    setStockInfo("⚠️ Bạn cần chọn đủ cột Tên SP và cột Tồn.", "bad");
+    return;
+  }
+
+  const map = {};
+  let used=0, skipped=0;
+
+  for(const r of stockRawRows){
+    const name = r[nameCol];
+    const key = norm(name);
+    if(!key){ skipped++; continue; }
+
+    const qty = toNumber(r[qtyCol]);
+    const add = Number.isFinite(qty) ? qty : 0;
+
+    map[key] = (map[key] ?? 0) + add;
+    used++;
+  }
+
+  state.stock.index = map;
+  state.stock.colName = nameCol;
+  state.stock.colQty  = qtyCol;
+  state.stock.rowsCount = stockRawRows.length;
+  state.stock.keysCount = Object.keys(map).length;
+  state.stock.updatedAt = new Date().toISOString();
+
+  save();
+
+  setStockInfo(`✅ Đã tạo danh mục tồn: <b>${state.stock.keysCount}</b> sản phẩm (đọc ${used} dòng, bỏ ${skipped} dòng).`, "ok");
+  toast("Đã tạo danh mục tồn");
+  renderAll();
+}
+
+$("buildStockBtn").addEventListener("click", buildStockIndex);
+$("refreshFromStockBtn").addEventListener("click", ()=>{
+  toast("Đã cập nhật hiển thị");
+  renderAll();
+});
+
+$("uploadStockBtn").addEventListener("click", ()=> $("stockFile").click());
+
+$("stockFile").addEventListener("change", async ()=>{
+  const f = $("stockFile").files?.[0];
+  if(!f) return;
+
+  try{
+    const ext = (f.name.split(".").pop() || "").toLowerCase();
+
+    setStockInfo("Đang đọc file tồn...", "warn");
+    if(ext === "csv"){
+      const text = await f.text();
+      const parsed = parseCSV(text);
+      stockRawRows = parsed.rows;
+      fillStockSelects(parsed.headers);
+    }else if(ext === "xlsx" || ext === "xls"){
+      const buf = await f.arrayBuffer();
+      const parsed = parseExcel(buf);
+      stockRawRows = parsed.rows;
+      fillStockSelects(parsed.headers);
+    }else{
+      setStockInfo("❌ Định dạng không hỗ trợ. Chỉ nhận CSV/XLSX/XLS.", "bad");
+      stockRawRows = [];
+      stockHeaders = [];
+      return;
+    }
+
+    state.stock.fileName = f.name;
+    save();
+    toast("Đã nạp file tồn");
+  }catch(e){
+    console.error(e);
+    setStockInfo("❌ Lỗi đọc file tồn.", "bad");
+  }finally{
+    $("stockFile").value = "";
+  }
+});
+
+$("clearStockBtn").addEventListener("click", ()=>{
+  stockRawRows = [];
+  stockHeaders = [];
+  state.stock = {index:{}, fileName:"", updatedAt:"", colName:"", colQty:"", rowsCount:0, keysCount:0};
+  save();
+  $("stockColName").innerHTML = `<option value="">(Chưa có dữ liệu)</option>`;
+  $("stockColQty").innerHTML  = `<option value="">(Chưa có dữ liệu)</option>`;
+  $("stockColName").disabled = true;
+  $("stockColQty").disabled  = true;
+  $("buildStockBtn").disabled = true;
+  $("refreshFromStockBtn").disabled = true;
+  setStockInfo("Đã bỏ tồn kho.", "warn");
+  renderAll();
+  toast("Đã bỏ tồn");
 });
 
 /* =========================
@@ -742,6 +1083,9 @@ function renderProducts(){
   arr.slice(0, limit).forEach(p=>{
     const loc = state.locIndex?.[p.key];
     const locText = loc ? formatLoc(loc) : "Chưa gán vị trí";
+    const qv = getStockQtyByKey(p.key);
+    const qcls = qtyClass(qv);
+
     const item = document.createElement("div");
     item.className = "item";
     item.innerHTML = `
@@ -749,6 +1093,7 @@ function renderProducts(){
         <div>
           <div class="name">${escapeHtml(p.name)}</div>
           <div class="meta">${escapeHtml(locText)}</div>
+          <div class="meta">Tồn: <b class="${qcls}">${escapeHtml(fmtQty(qv))}</b></div>
           <div class="meta mono">${p.key}</div>
         </div>
         <div class="actions">
@@ -757,7 +1102,7 @@ function renderProducts(){
       </div>
     `;
     item.querySelector('[data-act="copy"]').addEventListener("click", async ()=>{
-      const line = `${p.name} — ${locText}`;
+      const line = `${p.name} — ${locText} — Tồn: ${fmtQty(qv)}`;
       try{ await navigator.clipboard.writeText(line); toast("Đã copy"); }
       catch(e){ alert(line); }
     });
@@ -882,7 +1227,6 @@ $("deleteShelfBtn").addEventListener("click", ()=>{
 
   if(!confirm(msg)) return;
 
-  // remove assignments in this shelf
   const keysToRemove = Object.keys(state.locIndex).filter(k=>state.locIndex[k].shelfId === shelfId);
   keysToRemove.forEach(k=> delete state.locIndex[k]);
 
@@ -1050,9 +1394,21 @@ function renderTrayGrid(){
     const cell = document.createElement("div");
     const isFilled = !!key;
     cell.className = "cell " + (isFilled ? "filled" : "empty") + (selectedPos===pos ? " selected" : "");
+
+    let badgeHtml = `<span class="badge">Tồn: —</span>`;
+    let qtyLine = "";
+
+    if(isFilled){
+      const qv = getStockQtyByKey(key);
+      const cls = qtyClass(qv);
+      badgeHtml = `<span class="badge ${cls}">Tồn: ${escapeHtml(fmtQty(qv))}</span>`;
+      qtyLine = `<div class="qtyline">Tồn: ${escapeHtml(fmtQty(qv))}</div>`;
+    }
+
     cell.innerHTML = `
-      <div class="pos">#${pos}</div>
+      <div class="pos"><span>#${pos}</span>${badgeHtml}</div>
       <div class="pname">${isFilled ? escapeHtml(productNameByKey(key)) : "Trống"}</div>
+      ${isFilled ? qtyLine : `<div class="qtyline">&nbsp;</div>`}
     `;
     cell.addEventListener("click", ()=>{
       selectedPos = pos;
@@ -1079,8 +1435,11 @@ function updateSelectedInfo(){
     $("selectedInfo").className = "pill warn";
     $("selectedInfo").textContent = `Đang chọn: Vị trí ${selectedPos} (TRỐNG)`;
   }else{
+    const qv = getStockQtyByKey(sl.productKey);
+    const cls = qtyClass(qv);
     $("selectedInfo").className = "pill ok";
-    $("selectedInfo").textContent = `Đang chọn: Vị trí ${selectedPos} • ${productNameByKey(sl.productKey)}`;
+    $("selectedInfo").textContent =
+      `Đang chọn: Vị trí ${selectedPos} • ${productNameByKey(sl.productKey)} • Tồn: ${fmtQty(qv)}`;
   }
 }
 
@@ -1094,8 +1453,10 @@ $("copySelectedBtn").addEventListener("click", async ()=>{
   const tray = getSelectedTray();
   if(!shelf || !tray || selectedPos===null){ toast("Chưa chọn ô"); return; }
   const sl = slotAtPos(tray, selectedPos);
+  const qv = sl ? getStockQtyByKey(sl.productKey) : null;
+
   const text = sl
-    ? `${productNameByKey(sl.productKey)} — ${shelf.name} / ${tray.name} / Vị trí ${selectedPos}`
+    ? `${productNameByKey(sl.productKey)} — ${shelf.name} / ${tray.name} / Vị trí ${selectedPos} — Tồn: ${fmtQty(qv)}`
     : `Ô trống — ${shelf.name} / ${tray.name} / Vị trí ${selectedPos}`;
   try{ await navigator.clipboard.writeText(text); toast("Đã copy"); }
   catch(e){ alert(text); }
@@ -1107,12 +1468,11 @@ $("replaceSelectedBtn").addEventListener("click", ()=>{
 });
 
 /* =========================
-   Quick Assign Modal (tap product => assign + pos++)
+   Quick Assign Modal
 ========================= */
 let modalAssignPos = 1;
 let modalAssignedCount = 0;
-let modalHistory = []; // for undo
-let modalStartPosLocked = null; // if opened from a selected cell replace
+let modalHistory = [];
 
 function openAssignModal(opts = {}){
   const shelf = getSelectedShelf();
@@ -1125,22 +1485,17 @@ function openAssignModal(opts = {}){
   modalHistory = [];
   modalAssignedCount = 0;
 
-  modalStartPosLocked = (typeof opts.startPos === "number" && opts.startPos > 0) ? opts.startPos : null;
-
   $("modalTitle").textContent = `Gán nhanh: ${shelf.name} → ${tray.name}`;
-
   $("modalSearch").value = "";
   $("modalPickList").innerHTML = "";
   $("modalEmpty").style.display = "block";
 
-  // vị trí bắt đầu:
-  const basePos = modalStartPosLocked ?? (selectedPos ?? 1);
+  const basePos = (typeof opts.startPos === "number" && opts.startPos > 0) ? opts.startPos : (selectedPos ?? 1);
   const skipUsed = $("skipUsedToggle").checked;
   modalAssignPos = skipUsed ? getNextFreePos(tray, basePos) : Math.max(1, basePos);
   $("modalPos").value = String(modalAssignPos);
 
-  $("modalNote").innerHTML =
-    `Vị trí bắt đầu: <b>${modalAssignPos}</b> • Chạm SP để gán.`;
+  $("modalNote").innerHTML = `Vị trí bắt đầu: <b>${modalAssignPos}</b> • Chạm SP để gán.`;
 
   $("modalBack").style.display = "flex";
   setTimeout(()=> $("modalSearch").focus(), 50);
@@ -1148,7 +1503,6 @@ function openAssignModal(opts = {}){
 
 function closeAssignModal(){
   $("modalBack").style.display = "none";
-  modalStartPosLocked = null;
 }
 
 $("openAssignBtn").addEventListener("click", ()=> openAssignModal({}));
@@ -1171,11 +1525,8 @@ function assignQuick(productKey){
   if(typed !== null) modalAssignPos = typed;
 
   const skipUsed = $("skipUsedToggle").checked;
-
-  // Nếu mở để thay ô đang chọn: vẫn cho gán theo thứ tự từ ô đó (nhưng sẽ nhảy ô trống nếu bật skip)
   const pos = skipUsed ? getNextFreePos(tray, modalAssignPos) : Math.max(1, modalAssignPos);
 
-  // Nếu pos vượt quá số ô/mâm thì cảnh báo
   const maxPos = Math.max(1, shelf.positionsPerTray ?? 30);
   if(pos > maxPos){
     toast("Vị trí vượt số ô của mâm");
@@ -1183,7 +1534,6 @@ function assignQuick(productKey){
     return;
   }
 
-  // nếu ô đang có sp khác -> thay trực tiếp
   const existedSlot = slotAtPos(tray, pos);
   let replacedKey = null;
   if(existedSlot && existedSlot.productKey !== productKey){
@@ -1192,7 +1542,6 @@ function assignQuick(productKey){
     delete state.locIndex[replacedKey];
   }
 
-  // nếu sp đã có vị trí khác -> tự chuyển (không hỏi)
   const oldLoc = state.locIndex[productKey] ? {...state.locIndex[productKey]} : null;
   removeProductFromOldLocation(productKey);
 
@@ -1200,25 +1549,20 @@ function assignQuick(productKey){
   tray.slots.sort((a,b)=>a.pos-b.pos);
   state.locIndex[productKey] = {shelfId: shelf.id, trayId: tray.id, pos};
 
-  modalHistory.push({
-    productKey,
-    newLoc: {shelfId: shelf.id, trayId: tray.id, pos},
-    oldLoc,
-    replacedKey
-  });
+  modalHistory.push({productKey, newLoc:{shelfId:shelf.id, trayId:tray.id, pos}, oldLoc, replacedKey});
 
   save();
 
   modalAssignedCount++;
-  // next position:
   modalAssignPos = pos + 1;
   $("modalPos").value = String(modalAssignPos);
 
   const prodName = productNameByKey(productKey);
-  $("modalNote").innerHTML = `Đã gán <b>${escapeHtml(prodName)}</b> → Vị trí <b>${pos}</b> • Tổng đã gán: <b>${modalAssignedCount}</b>`;
+  const qv = getStockQtyByKey(productKey);
+  $("modalNote").innerHTML =
+    `Đã gán <b>${escapeHtml(prodName)}</b> → Vị trí <b>${pos}</b> • Tồn: <b>${escapeHtml(fmtQty(qv))}</b> • Tổng đã gán: <b>${modalAssignedCount}</b>`;
   toast(`Gán vị trí ${pos}`);
 
-  // refresh tray ui
   selectedPos = pos;
   renderTrayGrid();
   renderTrayList();
@@ -1239,10 +1583,7 @@ $("undoAssignBtn").addEventListener("click", ()=>{
     newTray.slots = newTray.slots.filter(sl=> !(sl.productKey===last.productKey && sl.pos===last.newLoc.pos));
   }
 
-  // restore replacedKey (nếu có)
   if(last.replacedKey){
-    const rOldLoc = null; // trước đó nó nằm ở pos last.newLoc.pos trong tray này
-    // đưa lại vào tray:
     newTray?.slots?.push({pos:last.newLoc.pos, productKey:last.replacedKey});
     newTray?.slots?.sort((a,b)=>a.pos-b.pos);
     if(newShelf && newTray){
@@ -1250,7 +1591,6 @@ $("undoAssignBtn").addEventListener("click", ()=>{
     }
   }
 
-  // restore old location of productKey (if any)
   if(last.oldLoc){
     const oldShelf = state.shelves.find(s=>s.id===last.oldLoc.shelfId);
     const oldTray  = oldShelf?.trays?.find(t=>t.id===last.oldLoc.trayId);
@@ -1269,7 +1609,6 @@ $("undoAssignBtn").addEventListener("click", ()=>{
   const curTray = getSelectedTray();
   if(curTray){
     const typed = toInt($("modalPos").value);
-    // đưa về vị trí trống gần nhất từ (typed-1) để gán tiếp
     modalAssignPos = Math.max(1, (typed ?? (last.newLoc.pos+1)) - 1);
     if($("skipUsedToggle").checked) modalAssignPos = getNextFreePos(curTray, modalAssignPos);
     $("modalPos").value = String(modalAssignPos);
@@ -1307,6 +1646,8 @@ function renderModalPick(){
   arr.forEach(p=>{
     const loc = state.locIndex?.[p.key];
     const locText = loc ? formatLoc(loc) : "Chưa gán vị trí";
+    const qv = getStockQtyByKey(p.key);
+    const qcls = qtyClass(qv);
 
     const item = document.createElement("div");
     item.className = "item";
@@ -1315,6 +1656,7 @@ function renderModalPick(){
         <div>
           <div class="name">${escapeHtml(p.name)}</div>
           <div class="meta">${escapeHtml(locText)}</div>
+          <div class="meta">Tồn: <b class="${qcls}">${escapeHtml(fmtQty(qv))}</b></div>
           <div class="meta small">👉 Chạm để gán vào vị trí hiện tại</div>
         </div>
         <div class="actions">
@@ -1372,6 +1714,8 @@ function renderTrayList(){
 
   arr.forEach(sl=>{
     const prodName = productNameByKey(sl.productKey);
+    const qv = getStockQtyByKey(sl.productKey);
+    const qcls = qtyClass(qv);
 
     const item = document.createElement("div");
     item.className = "item";
@@ -1380,6 +1724,7 @@ function renderTrayList(){
         <div>
           <div class="name">${escapeHtml(prodName)}</div>
           <div class="meta">Vị trí: <b>${sl.pos}</b></div>
+          <div class="meta">Tồn: <b class="${qcls}">${escapeHtml(fmtQty(qv))}</b></div>
           <div class="meta mono">${escapeHtml(sl.productKey)}</div>
         </div>
         <div class="actions">
@@ -1391,7 +1736,7 @@ function renderTrayList(){
     `;
 
     item.querySelector('[data-act="copy"]').addEventListener("click", async ()=>{
-      const line = `${prodName} — ${shelf.name} / ${tray.name} / Vị trí ${sl.pos}`;
+      const line = `${prodName} — ${shelf.name} / ${tray.name} / Vị trí ${sl.pos} — Tồn: ${fmtQty(qv)}`;
       try{ await navigator.clipboard.writeText(line); toast("Đã copy"); }
       catch(e){ alert(line); }
     });
@@ -1511,6 +1856,9 @@ function renderLookup(){
       if(!loc || loc.shelfId !== shelfFilter) return;
     }
 
+    const qv = getStockQtyByKey(p.key);
+    const qcls = qtyClass(qv);
+
     const item = document.createElement("div");
     item.className = "item";
 
@@ -1519,6 +1867,7 @@ function renderLookup(){
         <div>
           <div class="name">${escapeHtml(p.name)}</div>
           <div class="meta">${escapeHtml(locText)}</div>
+          <div class="meta">Tồn: <b class="${qcls}">${escapeHtml(fmtQty(qv))}</b></div>
           <div class="meta mono">${escapeHtml(p.key)}</div>
         </div>
         <div class="actions">
@@ -1529,7 +1878,7 @@ function renderLookup(){
     `;
 
     item.querySelector('[data-act="copy"]').addEventListener("click", async ()=>{
-      const line = `${p.name} — ${locText}`;
+      const line = `${p.name} — ${locText} — Tồn: ${fmtQty(qv)}`;
       try{ await navigator.clipboard.writeText(line); toast("Đã copy"); }
       catch(e){ alert(line); }
     });
@@ -1585,6 +1934,8 @@ $("jsonFile").addEventListener("change", async ()=>{
     obj.products ??= [];
     obj.shelves ??= [];
     obj.locIndex ??= {};
+    obj.stock ??= {index:{}, fileName:"", updatedAt:"", colName:"", colQty:"", rowsCount:0, keysCount:0};
+    obj.stock.index ??= {};
     state = obj;
     save();
     renderAll();
@@ -1597,8 +1948,13 @@ $("jsonFile").addEventListener("change", async ()=>{
 });
 
 $("resetAllBtn").addEventListener("click", ()=>{
-  if(!confirm("Xoá TẤT CẢ dữ liệu (SP + kệ + vị trí)?")) return;
-  state = {products:[], shelves:[], locIndex:{}};
+  if(!confirm("Xoá TẤT CẢ dữ liệu (SP + kệ + vị trí + tồn)?")) return;
+  state = {
+    products:[],
+    shelves:[],
+    locIndex:{},
+    stock:{index:{}, fileName:"", updatedAt:"", colName:"", colQty:"", rowsCount:0, keysCount:0}
+  };
   save();
   renderAll();
   toast("Đã reset");
@@ -1613,6 +1969,15 @@ function renderLayout(){
   renderTrayGrid();
   renderTrayList();
   renderLookupShelves();
+
+  // enable/disable stock mapping selects based on whether we loaded raw headers in this session
+  // (if user reload page, raw rows not kept; but stock index still works)
+  if(stockHeaders.length){
+    // already enabled
+  }else{
+    // if they already have stock index saved but no session headers, keep selects disabled
+    // user can upload again to remap columns.
+  }
 }
 
 /* =========================
