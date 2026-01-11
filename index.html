@@ -30,7 +30,7 @@
         var(--bg);
       color:var(--text);
     }
-    .wrap{max-width:980px;margin:0 auto}
+    .wrap{max-width:1100px;margin:0 auto}
     .top{
       display:flex; gap:12px; align-items:center; justify-content:space-between;
       margin-bottom:12px;
@@ -50,6 +50,7 @@
       background:#f1f5f9;border:1px solid var(--border);
       color:var(--muted);font-size:12px;
       display:flex; gap:8px; align-items:center;
+      white-space:nowrap;
     }
     .ok{background:#e8f7ee; color:#14532d; border-color: rgba(27,94,32,.2)}
     .warn{background:#fff4e5; color:#7c2d12; border-color: rgba(239,108,0,.25)}
@@ -64,7 +65,7 @@
       padding:10px 12px;
       border-radius: 14px;
       cursor:pointer;
-      font-weight:800;
+      font-weight:900;
       color:#0f172a;
     }
     .tab.active{
@@ -73,7 +74,7 @@
       background: linear-gradient(135deg, rgba(25,118,210,.1), rgba(100,181,246,.1));
     }
     .row{display:grid; gap:12px}
-    @media (min-width:900px){
+    @media (min-width:980px){
       .row{grid-template-columns: 1fr 1fr;}
     }
     .card{
@@ -152,9 +153,69 @@
       background:#f8fafc;
       font-size:12px;
       color:var(--muted);
-      font-weight:800;
+      font-weight:900;
     }
     .tag strong{color:#0f172a}
+
+    /* Tray Grid */
+    .gridWrap{
+      border:1px solid var(--border);
+      border-radius: 18px;
+      background:#fff;
+      padding:12px;
+    }
+    .gridHead{
+      display:flex; gap:10px; align-items:center; justify-content:space-between;
+      flex-wrap:wrap;
+      margin-bottom:10px;
+    }
+    .gridHead .left{display:flex; gap:8px; flex-wrap:wrap; align-items:center}
+    .gridHead .right{display:flex; gap:8px; flex-wrap:wrap; align-items:center}
+    .grid{
+      display:grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap:8px;
+    }
+    @media (min-width:520px){
+      .grid{ grid-template-columns: repeat(6, 1fr); }
+    }
+    @media (min-width:820px){
+      .grid{ grid-template-columns: repeat(8, 1fr); }
+    }
+    .cell{
+      border:1px solid var(--border);
+      border-radius: 14px;
+      padding:10px 10px;
+      background:#f8fafc;
+      cursor:pointer;
+      min-height:54px;
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+      justify-content:space-between;
+    }
+    .cell .pos{
+      font-size:12px; color:var(--muted); font-weight:900;
+    }
+    .cell .pname{
+      font-size:12.5px; font-weight:900;
+      line-height:1.15;
+      color:#0f172a;
+      display:-webkit-box;
+      -webkit-line-clamp:2;
+      -webkit-box-orient:vertical;
+      overflow:hidden;
+    }
+    .cell.empty .pname{color:var(--muted); font-weight:800}
+    .cell.filled{
+      background: linear-gradient(135deg, rgba(25,118,210,.08), rgba(100,181,246,.10));
+      border-color: rgba(25,118,210,.25);
+    }
+    .cell.selected{
+      outline: 3px solid rgba(25,118,210,.35);
+      border-color: rgba(25,118,210,.45);
+      background: linear-gradient(135deg, rgba(25,118,210,.12), rgba(100,181,246,.12));
+    }
 
     /* Modal */
     .modalBack{
@@ -164,7 +225,7 @@
       z-index:9999;
     }
     .modal{
-      width:min(980px,100%);
+      width:min(1100px,100%);
       background:#fff;
       border-radius: 18px 18px 0 0;
       padding:14px;
@@ -197,8 +258,19 @@
       opacity:0; pointer-events:none;
       transition: opacity .2s;
     }
-
     .hidden{display:none !important}
+
+    .toggle{
+      display:flex; align-items:center; gap:8px;
+      padding:8px 10px;
+      border:1px solid var(--border);
+      border-radius: 14px;
+      background:#fff;
+      font-size:13px;
+      color:#0f172a;
+      font-weight:900;
+    }
+    .toggle input{width:auto}
   </style>
 </head>
 
@@ -209,7 +281,7 @@
       <div class="logo">VT</div>
       <div class="title">
         <h1>Vị trí sản phẩm (Kệ → Mâm → Vị trí)</h1>
-        <p>Nhập danh sách SP → tạo kệ/mâm → gán vị trí → tìm tên là ra ngay.</p>
+        <p>Gán nhanh theo thứ tự + mâm dạng lưới vị trí.</p>
       </div>
     </div>
     <div class="pill" id="statusPill">Chưa có dữ liệu</div>
@@ -225,7 +297,7 @@
   <!-- LOOKUP -->
   <div id="tab-lookup" class="card">
     <h2>Tra cứu vị trí theo tên sản phẩm</h2>
-    <p class="hint">Gõ tên (có thể gõ một phần) → tool sẽ ưu tiên khớp gần đúng.</p>
+    <p class="hint">Gõ tên (có thể gõ một phần). Kết quả sẽ hiện vị trí chính xác: Kệ • Mâm • Vị trí.</p>
 
     <div class="grid2">
       <div>
@@ -250,6 +322,7 @@
     <div class="row">
       <div class="card">
         <h2>Tạo / quản lý kệ</h2>
+
         <div class="grid2">
           <div>
             <label>Tên kệ</label>
@@ -261,9 +334,21 @@
           </div>
         </div>
 
+        <div class="grid2" style="margin-top:10px">
+          <div>
+            <label>Số vị trí mỗi mâm (ô lưới)</label>
+            <input id="newShelfSlots" inputmode="numeric" placeholder="VD: 30" value="30" />
+          </div>
+          <div>
+            <label>Gợi ý</label>
+            <div class="pill warn">Bạn có thể đổi số vị trí sau (trong kệ đã tạo)</div>
+          </div>
+        </div>
+
         <div class="btns">
           <button class="primary" id="createShelfBtn">➕ Tạo kệ</button>
           <button class="ghost" id="renameShelfBtn">✏️ Đổi tên kệ</button>
+          <button class="ghost" id="changeSlotsBtn">🔢 Đổi số vị trí/mâm</button>
           <button class="danger" id="deleteShelfBtn">🗑️ Xoá kệ</button>
         </div>
 
@@ -271,7 +356,7 @@
 
         <div class="grid2">
           <div>
-            <label>Chọn kệ để thao tác</label>
+            <label>Chọn kệ</label>
             <select id="shelfSelect"></select>
           </div>
           <div>
@@ -281,7 +366,7 @@
         </div>
 
         <div class="btns">
-          <button class="primary" id="assignBtn">📌 Gán sản phẩm vào mâm</button>
+          <button class="primary" id="openAssignBtn">⚡ Gán nhanh (chạm SP = +1 vị trí)</button>
           <button class="ghost" id="trayRenameBtn">✏️ Đổi tên mâm</button>
           <button class="danger" id="trayClearBtn">🧹 Xoá toàn bộ SP trong mâm</button>
         </div>
@@ -290,26 +375,57 @@
       </div>
 
       <div class="card">
-        <h2>Danh sách trong mâm</h2>
-        <p class="hint">Mỗi sản phẩm nằm đúng 1 vị trí duy nhất. Nếu gán lại, tool sẽ hỏi có “chuyển vị trí” không.</p>
+        <h2>Mâm dạng lưới vị trí</h2>
+        <p class="hint">
+          Chạm vào ô để chọn vị trí. Sau đó bấm <b>Gán nhanh</b> để gán từ ô đó (hoặc từ vị trí trống tiếp theo).
+        </p>
 
-        <div class="grid2">
-          <div>
-            <label>Tìm nhanh trong mâm</label>
-            <input id="traySearch" placeholder="gõ để lọc..." autocomplete="off"/>
+        <div class="gridWrap">
+          <div class="gridHead">
+            <div class="left" id="gridTags"></div>
+            <div class="right">
+              <span class="tag">Đã gán: <strong id="assignedCount">0</strong></span>
+              <span class="tag">Trống: <strong id="emptyCount">0</strong></span>
+            </div>
           </div>
-          <div>
-            <label>Sắp xếp</label>
-            <select id="traySort">
-              <option value="posAsc">Vị trí ↑</option>
-              <option value="posDesc">Vị trí ↓</option>
-              <option value="nameAsc">Tên A→Z</option>
-              <option value="nameDesc">Tên Z→A</option>
-            </select>
+
+          <div class="grid2">
+            <div>
+              <label>Tìm nhanh trong mâm</label>
+              <input id="traySearch" placeholder="gõ để lọc list bên dưới..." autocomplete="off"/>
+            </div>
+            <div>
+              <label>Sắp xếp list</label>
+              <select id="traySort">
+                <option value="posAsc">Vị trí ↑</option>
+                <option value="posDesc">Vị trí ↓</option>
+                <option value="nameAsc">Tên A→Z</option>
+                <option value="nameDesc">Tên Z→A</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="divider"></div>
+
+          <div id="trayGrid" class="grid"></div>
+
+          <div class="divider"></div>
+
+          <div class="grid2">
+            <div>
+              <div class="pill" id="selectedInfo">Chưa chọn ô</div>
+            </div>
+            <div class="btns" style="justify-content:flex-end;margin-top:0">
+              <button class="ghost" id="copySelectedBtn">📋 Copy</button>
+              <button class="ghost" id="replaceSelectedBtn">🔁 Thay SP</button>
+              <button class="danger" id="clearSelectedBtn">🗑️ Xoá ô</button>
+            </div>
           </div>
         </div>
 
         <div class="divider"></div>
+
+        <h2>Danh sách trong mâm (dạng list)</h2>
         <div id="trayList" class="list"></div>
         <p id="trayEmpty" class="small">Chưa có sản phẩm trong mâm này.</p>
       </div>
@@ -321,7 +437,7 @@
     <div class="row">
       <div class="card">
         <h2>Nhập danh sách sản phẩm (master)</h2>
-        <p class="hint">Mỗi dòng 1 sản phẩm. Ví dụ: <b>Mì Hảo Hảo Tôm Chua Cay 75G</b></p>
+        <p class="hint">Mỗi dòng 1 sản phẩm. Ví dụ: <b>MÌ HẢO HẢO TÔM CHUA CAY 75G</b></p>
         <textarea id="productTextarea" placeholder="Dán danh sách sản phẩm vào đây..."></textarea>
         <div class="btns">
           <button class="primary" id="addProductsBtn">✅ Thêm / cập nhật danh sách</button>
@@ -358,7 +474,7 @@
   <!-- BACKUP -->
   <div id="tab-backup" class="card hidden">
     <h2>Sao lưu / khôi phục</h2>
-    <p class="hint">Dữ liệu đang lưu trong máy (localStorage). Bạn nên export JSON để backup.</p>
+    <p class="hint">Dữ liệu lưu trong máy (localStorage). Bạn nên export JSON để backup.</p>
 
     <div class="btns">
       <button class="primary" id="exportBtn">⬇️ Export JSON</button>
@@ -372,11 +488,11 @@
   </div>
 </div>
 
-<!-- MODAL: Assign product -->
+<!-- MODAL: Quick assign -->
 <div class="modalBack" id="modalBack">
   <div class="modal">
     <div class="modalHead">
-      <h3 id="modalTitle">Gán sản phẩm</h3>
+      <h3 id="modalTitle">Gán nhanh</h3>
       <button class="xbtn" id="closeModal">✕</button>
     </div>
 
@@ -385,20 +501,36 @@
         <label>Tìm sản phẩm (master)</label>
         <input id="modalSearch" placeholder="gõ tên sản phẩm..." autocomplete="off"/>
       </div>
+
       <div>
-        <label>Vị trí (số)</label>
+        <label>Vị trí bắt đầu</label>
         <input id="modalPos" inputmode="numeric" placeholder="VD: 1" />
       </div>
     </div>
 
+    <div class="grid2" style="margin-top:10px">
+      <div class="toggle">
+        <input type="checkbox" id="skipUsedToggle" checked />
+        <span>Luôn nhảy tới <b>vị trí trống</b> (tự bỏ qua ô đã có)</span>
+      </div>
+      <div class="toggle">
+        <input type="checkbox" id="autoCloseToggle" />
+        <span>Tự đóng khi gán xong (tuỳ bạn)</span>
+      </div>
+    </div>
+
+    <p class="hint" style="margin-top:10px">
+      ✅ Chế độ gán nhanh: <b>chạm sản phẩm</b> → gán vào vị trí hiện tại → tự tăng lên vị trí tiếp theo.
+    </p>
+
     <div class="divider"></div>
     <div id="modalPickList" class="list"></div>
-    <p id="modalEmpty" class="small">Gõ để tìm sản phẩm rồi chọn.</p>
+    <p id="modalEmpty" class="small">Gõ để tìm sản phẩm rồi chạm để gán.</p>
 
     <div class="divider"></div>
     <div class="btns">
-      <button class="primary" id="confirmAssignBtn">📌 Gán vào vị trí</button>
-      <button class="ghost" id="cancelAssignBtn">Huỷ</button>
+      <button class="ghost" id="undoAssignBtn">↩️ Hoàn tác 1 bước</button>
+      <button class="primary" id="finishAssignBtn">✅ Xong</button>
     </div>
     <p class="small" id="modalNote" style="margin-top:10px;"></p>
   </div>
@@ -410,7 +542,7 @@
 /* =========================
    Data model
 ========================= */
-const LS_KEY = "vitri_sanpham_v1";
+const LS_KEY = "vitri_sanpham_v2_grid";
 
 function removeAccents(str){
   return (str || "")
@@ -435,7 +567,7 @@ function toInt(v){
 
 let state = {
   products: [], // [{id, name, key}]
-  shelves: [],  // [{id, name, trays:[{id,name, slots:[{pos, productKey}]}]}]
+  shelves: [],  // [{id, name, positionsPerTray, trays:[{id,name, slots:[{pos, productKey}]}]}]
   locIndex: {}  // productKey -> {shelfId, trayId, pos}
 };
 
@@ -444,7 +576,6 @@ function load(){
     const raw = localStorage.getItem(LS_KEY);
     if(raw){
       state = JSON.parse(raw);
-      // basic repairs
       state.products ??= [];
       state.shelves ??= [];
       state.locIndex ??= {};
@@ -529,10 +660,7 @@ function mergeProductsFromLines(lines){
 
 $("addProductsBtn").addEventListener("click", ()=>{
   const lines = $("productTextarea").value.split("\n").map(s=>s.trim()).filter(Boolean);
-  if(!lines.length){
-    toast("Chưa có nội dung để thêm");
-    return;
-  }
+  if(!lines.length){ toast("Chưa có nội dung để thêm"); return; }
   mergeProductsFromLines(lines);
   $("productTextarea").value = "";
   renderProducts();
@@ -543,7 +671,6 @@ $("clearProductsBtn").addEventListener("click", ()=>{
   if(!state.products.length){ toast("Danh sách SP đang trống"); return; }
   if(confirm("Xoá toàn bộ danh sách sản phẩm (master)?")){
     state.products = [];
-    // không auto xoá vị trí, nhưng tra cứu master sẽ khó. Bạn có thể reset all ở tab Sao lưu.
     save();
     renderProducts();
     renderLookup();
@@ -565,7 +692,6 @@ $("csvFile").addEventListener("change", async ()=>{
 });
 
 function parseCSVToNames(text){
-  // lấy cột đầu tiên, hoặc cột có header "Ten", "Name"
   const lines = text.replace(/\r/g,"").split("\n").filter(l=>l.trim().length);
   if(!lines.length) return [];
   const parseLine = (line)=>{
@@ -604,7 +730,7 @@ function renderProducts(){
 
   let arr = state.products;
   if(q){
-    arr = arr.filter(p=> p.key.includes(q) || norm(p.name).includes(q));
+    arr = arr.filter(p=> p.key.includes(q));
   }
 
   $("productStats").textContent = `Tổng sản phẩm: ${state.products.length} • Đang hiển thị: ${Math.min(arr.length, limit)}`;
@@ -639,7 +765,7 @@ function renderProducts(){
   });
 }
 
-$("masterSearch").addEventListener("input", debounce(renderProducts, 220));
+$("masterSearch").addEventListener("input", debounce(renderProducts, 200));
 $("masterLimit").addEventListener("change", renderProducts);
 
 /* =========================
@@ -687,18 +813,22 @@ function ensureTraySelect(){
   if(!traySel.value) traySel.value = shelf.trays[0].id;
 }
 
-function createShelf(name, trayCount){
+function createShelf(name, trayCount, slotsPerTray){
   const n = String(name ?? "").trim();
   if(!n){ toast("Nhập tên kệ"); return; }
-  const count = toInt(trayCount) ?? 5;
-  const trays = Array.from({length: Math.max(1, count)}, (_,i)=>({
+  const count = Math.max(1, toInt(trayCount) ?? 5);
+  const slots = Math.max(1, toInt(slotsPerTray) ?? 30);
+
+  const trays = Array.from({length: count}, (_,i)=>({
     id: uid("MAM"),
     name: `Mâm ${i+1}`,
     slots: []
   }));
+
   state.shelves.push({
     id: uid("KE"),
     name: n,
+    positionsPerTray: slots,
     trays
   });
   save();
@@ -706,7 +836,7 @@ function createShelf(name, trayCount){
 }
 
 $("createShelfBtn").addEventListener("click", ()=>{
-  createShelf($("newShelfName").value, $("newShelfTrays").value);
+  createShelf($("newShelfName").value, $("newShelfTrays").value, $("newShelfSlots").value);
   $("newShelfName").value = "";
   renderLayout();
   renderLookup();
@@ -727,6 +857,19 @@ $("renameShelfBtn").addEventListener("click", ()=>{
   toast("Đã đổi tên kệ");
 });
 
+$("changeSlotsBtn").addEventListener("click", ()=>{
+  const shelf = getSelectedShelf();
+  if(!shelf){ toast("Chưa chọn kệ"); return; }
+  const n = prompt("Số vị trí mỗi mâm (ô lưới):", String(shelf.positionsPerTray ?? 30));
+  if(n===null) return;
+  const slots = toInt(n);
+  if(slots===null || slots<=0){ toast("Số không hợp lệ"); return; }
+  shelf.positionsPerTray = slots;
+  save();
+  renderTrayGrid();
+  toast("Đã đổi số vị trí/mâm");
+});
+
 $("deleteShelfBtn").addEventListener("click", ()=>{
   const shelfId = $("shelfSelect").value;
   const shelf = state.shelves.find(s=>s.id===shelfId);
@@ -743,7 +886,6 @@ $("deleteShelfBtn").addEventListener("click", ()=>{
   const keysToRemove = Object.keys(state.locIndex).filter(k=>state.locIndex[k].shelfId === shelfId);
   keysToRemove.forEach(k=> delete state.locIndex[k]);
 
-  // remove shelf
   state.shelves = state.shelves.filter(s=>s.id!==shelfId);
   save();
   renderLayout();
@@ -761,16 +903,21 @@ function countAssignedInShelf(shelfId){
 
 $("shelfSelect").addEventListener("change", ()=>{
   ensureTraySelect();
+  selectedPos = null;
+  renderTrayGrid();
   renderTrayList();
   renderLookupShelves();
 });
 
-$("traySelect").addEventListener("change", renderTrayList);
+$("traySelect").addEventListener("change", ()=>{
+  selectedPos = null;
+  renderTrayGrid();
+  renderTrayList();
+});
 
 $("trayRenameBtn").addEventListener("click", ()=>{
-  const shelf = getSelectedShelf();
   const tray = getSelectedTray();
-  if(!shelf || !tray){ toast("Chưa chọn mâm"); return; }
+  if(!tray){ toast("Chưa chọn mâm"); return; }
   const n = prompt("Đổi tên mâm:", tray.name);
   if(n===null) return;
   const nn = n.trim();
@@ -791,12 +938,13 @@ $("trayClearBtn").addEventListener("click", ()=>{
   if(!count){ toast("Mâm đang trống"); return; }
   if(!confirm(`Xoá toàn bộ ${count} SP trong ${shelf.name} - ${tray.name}?`)) return;
 
-  // remove locIndex for those products
   tray.slots.forEach(sl=>{
     if(state.locIndex[sl.productKey]) delete state.locIndex[sl.productKey];
   });
   tray.slots = [];
+  selectedPos = null;
   save();
+  renderTrayGrid();
   renderTrayList();
   renderLookup();
   toast("Đã xoá SP trong mâm");
@@ -822,36 +970,315 @@ function formatLoc(loc){
 }
 
 /* =========================
-   Assign modal
+   Tray Grid
 ========================= */
-let modalPickedKey = null;
+let selectedPos = null;
 
-function openModal(){
+function getNextFreePos(tray, startPos){
+  const used = new Set((tray.slots || []).map(s => s.pos));
+  let p = Math.max(1, startPos || 1);
+  while(used.has(p)) p++;
+  return p;
+}
+
+function productNameByKey(key){
+  return state.products.find(p=>p.key===key)?.name ?? key;
+}
+
+function slotAtPos(tray, pos){
+  return (tray.slots || []).find(s=>s.pos === pos) || null;
+}
+
+function removeProductFromOldLocation(productKey){
+  const oldLoc = state.locIndex[productKey];
+  if(!oldLoc) return null;
+
+  const oldShelf = state.shelves.find(s=>s.id===oldLoc.shelfId);
+  const oldTray  = oldShelf?.trays?.find(t=>t.id===oldLoc.trayId);
+  if(oldTray){
+    oldTray.slots = oldTray.slots.filter(sl=>sl.productKey !== productKey);
+  }
+  return oldLoc;
+}
+
+function clearPosInCurrentTray(pos){
+  const tray = getSelectedTray();
+  if(!tray) return;
+  const sl = slotAtPos(tray, pos);
+  if(!sl){ toast("Ô đang trống"); return; }
+  if(!confirm(`Xoá "${productNameByKey(sl.productKey)}" khỏi vị trí ${pos}?`)) return;
+
+  tray.slots = tray.slots.filter(s=>s.pos !== pos);
+  delete state.locIndex[sl.productKey];
+  save();
+  renderTrayGrid();
+  renderTrayList();
+  renderLookup();
+  toast("Đã xoá ô");
+}
+
+function renderTrayGrid(){
+  const shelf = getSelectedShelf();
+  const tray = getSelectedTray();
+  const grid = $("trayGrid");
+  grid.innerHTML = "";
+
+  if(!shelf || !tray){
+    $("gridTags").innerHTML = "";
+    $("assignedCount").textContent = "0";
+    $("emptyCount").textContent = "0";
+    $("selectedInfo").textContent = "Chưa chọn ô";
+    return;
+  }
+
+  const maxPos = Math.max(1, shelf.positionsPerTray ?? 30);
+  const used = new Map(tray.slots.map(s=>[s.pos, s.productKey]));
+  const assigned = used.size;
+  const empty = Math.max(0, maxPos - assigned);
+
+  $("assignedCount").textContent = String(assigned);
+  $("emptyCount").textContent = String(empty);
+
+  $("gridTags").innerHTML = `
+    <span class="tag"><strong>${escapeHtml(shelf.name)}</strong></span>
+    <span class="tag"><strong>${escapeHtml(tray.name)}</strong></span>
+    <span class="tag">Ô: <strong>${maxPos}</strong></span>
+  `;
+
+  for(let pos=1; pos<=maxPos; pos++){
+    const key = used.get(pos);
+    const cell = document.createElement("div");
+    const isFilled = !!key;
+    cell.className = "cell " + (isFilled ? "filled" : "empty") + (selectedPos===pos ? " selected" : "");
+    cell.innerHTML = `
+      <div class="pos">#${pos}</div>
+      <div class="pname">${isFilled ? escapeHtml(productNameByKey(key)) : "Trống"}</div>
+    `;
+    cell.addEventListener("click", ()=>{
+      selectedPos = pos;
+      updateSelectedInfo();
+      renderTrayGrid();
+    });
+    grid.appendChild(cell);
+  }
+
+  if(selectedPos === null || selectedPos < 1 || selectedPos > maxPos) selectedPos = null;
+  updateSelectedInfo();
+}
+
+function updateSelectedInfo(){
+  const shelf = getSelectedShelf();
+  const tray = getSelectedTray();
+  if(!shelf || !tray || selectedPos === null){
+    $("selectedInfo").className = "pill";
+    $("selectedInfo").textContent = "Chưa chọn ô";
+    return;
+  }
+  const sl = slotAtPos(tray, selectedPos);
+  if(!sl){
+    $("selectedInfo").className = "pill warn";
+    $("selectedInfo").textContent = `Đang chọn: Vị trí ${selectedPos} (TRỐNG)`;
+  }else{
+    $("selectedInfo").className = "pill ok";
+    $("selectedInfo").textContent = `Đang chọn: Vị trí ${selectedPos} • ${productNameByKey(sl.productKey)}`;
+  }
+}
+
+$("clearSelectedBtn").addEventListener("click", ()=>{
+  if(selectedPos===null){ toast("Chưa chọn ô"); return; }
+  clearPosInCurrentTray(selectedPos);
+});
+
+$("copySelectedBtn").addEventListener("click", async ()=>{
+  const shelf = getSelectedShelf();
+  const tray = getSelectedTray();
+  if(!shelf || !tray || selectedPos===null){ toast("Chưa chọn ô"); return; }
+  const sl = slotAtPos(tray, selectedPos);
+  const text = sl
+    ? `${productNameByKey(sl.productKey)} — ${shelf.name} / ${tray.name} / Vị trí ${selectedPos}`
+    : `Ô trống — ${shelf.name} / ${tray.name} / Vị trí ${selectedPos}`;
+  try{ await navigator.clipboard.writeText(text); toast("Đã copy"); }
+  catch(e){ alert(text); }
+});
+
+$("replaceSelectedBtn").addEventListener("click", ()=>{
+  if(selectedPos===null){ toast("Chưa chọn ô"); return; }
+  openAssignModal({ startPos: selectedPos });
+});
+
+/* =========================
+   Quick Assign Modal (tap product => assign + pos++)
+========================= */
+let modalAssignPos = 1;
+let modalAssignedCount = 0;
+let modalHistory = []; // for undo
+let modalStartPosLocked = null; // if opened from a selected cell replace
+
+function openAssignModal(opts = {}){
   const shelf = getSelectedShelf();
   const tray = getSelectedTray();
   if(!shelf || !tray){
     toast("Cần chọn kệ và mâm trước");
     return;
   }
-  modalPickedKey = null;
-  $("modalTitle").textContent = `Gán sản phẩm vào: ${shelf.name} → ${tray.name}`;
+
+  modalHistory = [];
+  modalAssignedCount = 0;
+
+  modalStartPosLocked = (typeof opts.startPos === "number" && opts.startPos > 0) ? opts.startPos : null;
+
+  $("modalTitle").textContent = `Gán nhanh: ${shelf.name} → ${tray.name}`;
+
   $("modalSearch").value = "";
-  $("modalPos").value = "";
-  $("modalNote").textContent = "";
   $("modalPickList").innerHTML = "";
   $("modalEmpty").style.display = "block";
+
+  // vị trí bắt đầu:
+  const basePos = modalStartPosLocked ?? (selectedPos ?? 1);
+  const skipUsed = $("skipUsedToggle").checked;
+  modalAssignPos = skipUsed ? getNextFreePos(tray, basePos) : Math.max(1, basePos);
+  $("modalPos").value = String(modalAssignPos);
+
+  $("modalNote").innerHTML =
+    `Vị trí bắt đầu: <b>${modalAssignPos}</b> • Chạm SP để gán.`;
+
   $("modalBack").style.display = "flex";
   setTimeout(()=> $("modalSearch").focus(), 50);
 }
-function closeModal(){
+
+function closeAssignModal(){
   $("modalBack").style.display = "none";
+  modalStartPosLocked = null;
 }
 
-$("assignBtn").addEventListener("click", openModal);
-$("closeModal").addEventListener("click", closeModal);
-$("cancelAssignBtn").addEventListener("click", closeModal);
+$("openAssignBtn").addEventListener("click", ()=> openAssignModal({}));
+
+$("closeModal").addEventListener("click", closeAssignModal);
+$("finishAssignBtn").addEventListener("click", ()=>{
+  closeAssignModal();
+  toast("Đã lưu vị trí");
+});
 $("modalBack").addEventListener("click", (e)=>{
-  if(e.target === $("modalBack")) closeModal();
+  if(e.target === $("modalBack")) closeAssignModal();
+});
+
+function assignQuick(productKey){
+  const shelf = getSelectedShelf();
+  const tray = getSelectedTray();
+  if(!shelf || !tray){ toast("Thiếu kệ/mâm"); return; }
+
+  const typed = toInt($("modalPos").value);
+  if(typed !== null) modalAssignPos = typed;
+
+  const skipUsed = $("skipUsedToggle").checked;
+
+  // Nếu mở để thay ô đang chọn: vẫn cho gán theo thứ tự từ ô đó (nhưng sẽ nhảy ô trống nếu bật skip)
+  const pos = skipUsed ? getNextFreePos(tray, modalAssignPos) : Math.max(1, modalAssignPos);
+
+  // Nếu pos vượt quá số ô/mâm thì cảnh báo
+  const maxPos = Math.max(1, shelf.positionsPerTray ?? 30);
+  if(pos > maxPos){
+    toast("Vị trí vượt số ô của mâm");
+    $("modalNote").innerHTML = `⚠️ Vị trí <b>${pos}</b> vượt số ô (<b>${maxPos}</b>). Hãy tăng "Số vị trí/mâm" hoặc đổi vị trí bắt đầu.`;
+    return;
+  }
+
+  // nếu ô đang có sp khác -> thay trực tiếp
+  const existedSlot = slotAtPos(tray, pos);
+  let replacedKey = null;
+  if(existedSlot && existedSlot.productKey !== productKey){
+    replacedKey = existedSlot.productKey;
+    tray.slots = tray.slots.filter(s=>s.pos !== pos);
+    delete state.locIndex[replacedKey];
+  }
+
+  // nếu sp đã có vị trí khác -> tự chuyển (không hỏi)
+  const oldLoc = state.locIndex[productKey] ? {...state.locIndex[productKey]} : null;
+  removeProductFromOldLocation(productKey);
+
+  tray.slots.push({pos, productKey});
+  tray.slots.sort((a,b)=>a.pos-b.pos);
+  state.locIndex[productKey] = {shelfId: shelf.id, trayId: tray.id, pos};
+
+  modalHistory.push({
+    productKey,
+    newLoc: {shelfId: shelf.id, trayId: tray.id, pos},
+    oldLoc,
+    replacedKey
+  });
+
+  save();
+
+  modalAssignedCount++;
+  // next position:
+  modalAssignPos = pos + 1;
+  $("modalPos").value = String(modalAssignPos);
+
+  const prodName = productNameByKey(productKey);
+  $("modalNote").innerHTML = `Đã gán <b>${escapeHtml(prodName)}</b> → Vị trí <b>${pos}</b> • Tổng đã gán: <b>${modalAssignedCount}</b>`;
+  toast(`Gán vị trí ${pos}`);
+
+  // refresh tray ui
+  selectedPos = pos;
+  renderTrayGrid();
+  renderTrayList();
+  renderLookup();
+
+  if($("autoCloseToggle").checked){
+    closeAssignModal();
+  }
+}
+
+$("undoAssignBtn").addEventListener("click", ()=>{
+  const last = modalHistory.pop();
+  if(!last){ toast("Không có gì để hoàn tác"); return; }
+
+  const newShelf = state.shelves.find(s=>s.id===last.newLoc.shelfId);
+  const newTray  = newShelf?.trays?.find(t=>t.id===last.newLoc.trayId);
+  if(newTray){
+    newTray.slots = newTray.slots.filter(sl=> !(sl.productKey===last.productKey && sl.pos===last.newLoc.pos));
+  }
+
+  // restore replacedKey (nếu có)
+  if(last.replacedKey){
+    const rOldLoc = null; // trước đó nó nằm ở pos last.newLoc.pos trong tray này
+    // đưa lại vào tray:
+    newTray?.slots?.push({pos:last.newLoc.pos, productKey:last.replacedKey});
+    newTray?.slots?.sort((a,b)=>a.pos-b.pos);
+    if(newShelf && newTray){
+      state.locIndex[last.replacedKey] = {shelfId:newShelf.id, trayId:newTray.id, pos:last.newLoc.pos};
+    }
+  }
+
+  // restore old location of productKey (if any)
+  if(last.oldLoc){
+    const oldShelf = state.shelves.find(s=>s.id===last.oldLoc.shelfId);
+    const oldTray  = oldShelf?.trays?.find(t=>t.id===last.oldLoc.trayId);
+    if(oldTray){
+      oldTray.slots.push({pos:last.oldLoc.pos, productKey:last.productKey});
+      oldTray.slots.sort((a,b)=>a.pos-b.pos);
+    }
+    state.locIndex[last.productKey] = last.oldLoc;
+  }else{
+    delete state.locIndex[last.productKey];
+  }
+
+  save();
+  modalAssignedCount = Math.max(0, modalAssignedCount-1);
+
+  const curTray = getSelectedTray();
+  if(curTray){
+    const typed = toInt($("modalPos").value);
+    // đưa về vị trí trống gần nhất từ (typed-1) để gán tiếp
+    modalAssignPos = Math.max(1, (typed ?? (last.newLoc.pos+1)) - 1);
+    if($("skipUsedToggle").checked) modalAssignPos = getNextFreePos(curTray, modalAssignPos);
+    $("modalPos").value = String(modalAssignPos);
+  }
+
+  renderTrayGrid();
+  renderTrayList();
+  renderLookup();
+  toast("Đã hoàn tác");
 });
 
 function renderModalPick(){
@@ -867,7 +1294,7 @@ function renderModalPick(){
 
   const arr = state.products
     .filter(p=>p.key.includes(q))
-    .slice(0, 50);
+    .slice(0, 80);
 
   if(!arr.length){
     const p = document.createElement("p");
@@ -880,6 +1307,7 @@ function renderModalPick(){
   arr.forEach(p=>{
     const loc = state.locIndex?.[p.key];
     const locText = loc ? formatLoc(loc) : "Chưa gán vị trí";
+
     const item = document.createElement("div");
     item.className = "item";
     item.innerHTML = `
@@ -887,81 +1315,25 @@ function renderModalPick(){
         <div>
           <div class="name">${escapeHtml(p.name)}</div>
           <div class="meta">${escapeHtml(locText)}</div>
+          <div class="meta small">👉 Chạm để gán vào vị trí hiện tại</div>
         </div>
         <div class="actions">
-          <button class="primary" data-pick>Chọn</button>
+          <button class="primary">Chạm để gán</button>
         </div>
       </div>
     `;
-    item.querySelector("[data-pick]").addEventListener("click", ()=>{
-      modalPickedKey = p.key;
-      $("modalNote").innerHTML = `Đã chọn: <b>${escapeHtml(p.name)}</b>`;
-      toast("Đã chọn sản phẩm");
-    });
+
+    const doAssign = ()=> assignQuick(p.key);
+    item.addEventListener("click", ()=> doAssign());
+    item.querySelector("button").addEventListener("click", (e)=>{ e.stopPropagation(); doAssign(); });
+
     list.appendChild(item);
   });
 }
-
-$("modalSearch").addEventListener("input", debounce(renderModalPick, 200));
-
-$("confirmAssignBtn").addEventListener("click", ()=>{
-  const shelf = getSelectedShelf();
-  const tray = getSelectedTray();
-  if(!shelf || !tray){ toast("Thiếu kệ/mâm"); return; }
-
-  if(!modalPickedKey){
-    toast("Bạn chưa chọn sản phẩm");
-    return;
-  }
-  const pos = toInt($("modalPos").value);
-  if(pos === null || pos <= 0){
-    toast("Vị trí phải là số > 0");
-    $("modalPos").focus();
-    return;
-  }
-
-  // nếu vị trí đã có sp
-  const existedSlot = tray.slots.find(s=>s.pos === pos);
-  if(existedSlot && existedSlot.productKey !== modalPickedKey){
-    const existedName = state.products.find(p=>p.key===existedSlot.productKey)?.name ?? existedSlot.productKey;
-    if(!confirm(`Vị trí ${pos} đang có "${existedName}". Thay bằng sản phẩm mới?`)){
-      return;
-    }
-    // xoá locIndex của sp cũ
-    delete state.locIndex[existedSlot.productKey];
-    // remove slot cũ
-    tray.slots = tray.slots.filter(s=>s.pos !== pos);
-  }
-
-  // nếu sp đã có vị trí khác
-  const oldLoc = state.locIndex[modalPickedKey];
-  if(oldLoc){
-    const oldText = formatLoc(oldLoc);
-    if(!confirm(`Sản phẩm này đang ở: ${oldText}\nBạn muốn CHUYỂN sang vị trí mới?`)){
-      return;
-    }
-    // remove from old tray slots
-    const oldShelf = state.shelves.find(s=>s.id===oldLoc.shelfId);
-    const oldTray = oldShelf?.trays?.find(t=>t.id===oldLoc.trayId);
-    if(oldTray){
-      oldTray.slots = oldTray.slots.filter(sl=>sl.productKey !== modalPickedKey);
-    }
-  }
-
-  tray.slots.push({pos, productKey: modalPickedKey});
-  tray.slots.sort((a,b)=>a.pos-b.pos);
-
-  state.locIndex[modalPickedKey] = {shelfId: shelf.id, trayId: tray.id, pos};
-
-  save();
-  closeModal();
-  renderTrayList();
-  renderLookup();
-  toast("Đã gán vị trí");
-});
+$("modalSearch").addEventListener("input", debounce(renderModalPick, 180));
 
 /* =========================
-   Tray list render
+   Tray List render
 ========================= */
 function renderTrayList(){
   const shelf = getSelectedShelf();
@@ -981,23 +1353,15 @@ function renderTrayList(){
   let arr = tray.slots.slice();
   if(q){
     arr = arr.filter(sl=>{
-      const name = state.products.find(p=>p.key===sl.productKey)?.name ?? sl.productKey;
+      const name = productNameByKey(sl.productKey);
       return norm(name).includes(q);
     });
   }
 
   if(sort==="posAsc") arr.sort((a,b)=>a.pos-b.pos);
   if(sort==="posDesc") arr.sort((a,b)=>b.pos-a.pos);
-  if(sort==="nameAsc") arr.sort((a,b)=>{
-    const an = state.products.find(p=>p.key===a.productKey)?.name ?? "";
-    const bn = state.products.find(p=>p.key===b.productKey)?.name ?? "";
-    return an.localeCompare(bn,"vi");
-  });
-  if(sort==="nameDesc") arr.sort((a,b)=>{
-    const an = state.products.find(p=>p.key===a.productKey)?.name ?? "";
-    const bn = state.products.find(p=>p.key===b.productKey)?.name ?? "";
-    return bn.localeCompare(an,"vi");
-  });
+  if(sort==="nameAsc") arr.sort((a,b)=> productNameByKey(a.productKey).localeCompare(productNameByKey(b.productKey),"vi"));
+  if(sort==="nameDesc") arr.sort((a,b)=> productNameByKey(b.productKey).localeCompare(productNameByKey(a.productKey),"vi"));
 
   $("trayEmpty").style.display = tray.slots.length ? "none" : "block";
   $("layoutInfo").innerHTML = `
@@ -1007,8 +1371,7 @@ function renderTrayList(){
   `;
 
   arr.forEach(sl=>{
-    const prod = state.products.find(p=>p.key===sl.productKey);
-    const prodName = prod?.name ?? sl.productKey;
+    const prodName = productNameByKey(sl.productKey);
 
     const item = document.createElement("div");
     item.className = "item";
@@ -1039,20 +1402,23 @@ function renderTrayList(){
       const npos = toInt(np);
       if(npos===null || npos<=0){ toast("Vị trí phải > 0"); return; }
 
-      // nếu vị trí mới đã có sp khác
-      const existed = tray.slots.find(x=>x.pos===npos);
+      const maxPos = Math.max(1, shelf.positionsPerTray ?? 30);
+      if(npos > maxPos){ toast("Vượt số ô của mâm"); return; }
+
+      const existed = slotAtPos(tray, npos);
       if(existed && existed.productKey !== sl.productKey){
-        const existedName = state.products.find(p=>p.key===existed.productKey)?.name ?? existed.productKey;
+        const existedName = productNameByKey(existed.productKey);
         if(!confirm(`Vị trí ${npos} đang có "${existedName}". Thay thế?`)) return;
         delete state.locIndex[existed.productKey];
         tray.slots = tray.slots.filter(x=>x.pos!==npos);
       }
 
-      // update slot
       sl.pos = npos;
       tray.slots.sort((a,b)=>a.pos-b.pos);
       state.locIndex[sl.productKey] = {shelfId:shelf.id, trayId:tray.id, pos:npos};
+      selectedPos = npos;
       save();
+      renderTrayGrid();
       renderTrayList();
       renderLookup();
       toast("Đã đổi vị trí");
@@ -1062,7 +1428,9 @@ function renderTrayList(){
       if(!confirm(`Xoá "${prodName}" khỏi ${shelf.name} - ${tray.name}?`)) return;
       tray.slots = tray.slots.filter(x=>x.productKey !== sl.productKey);
       delete state.locIndex[sl.productKey];
+      if(selectedPos === sl.pos) selectedPos = null;
       save();
+      renderTrayGrid();
       renderTrayList();
       renderLookup();
       toast("Đã xoá");
@@ -1072,7 +1440,7 @@ function renderTrayList(){
   });
 }
 
-$("traySearch").addEventListener("input", debounce(renderTrayList, 180));
+$("traySearch").addEventListener("input", debounce(renderTrayList, 160));
 $("traySort").addEventListener("change", renderTrayList);
 
 /* =========================
@@ -1092,12 +1460,10 @@ function renderLookupShelves(){
 }
 
 function scoreMatch(qKey, pKey){
-  // điểm đơn giản: chứa nguyên cụm => cao, bắt đầu => cao hơn
   if(!qKey) return 0;
   if(pKey === qKey) return 1000;
   if(pKey.startsWith(qKey)) return 600 + qKey.length;
   if(pKey.includes(qKey)) return 300 + qKey.length;
-  // fuzzy: mỗi từ khớp
   const parts = qKey.split(" ").filter(Boolean);
   let hit=0;
   for(const w of parts) if(pKey.includes(w)) hit++;
@@ -1121,7 +1487,6 @@ function renderLookup(){
     return;
   }
 
-  // tìm trong master (ưu tiên), nếu master trống thì tìm theo locIndex keys
   let pool = state.products.length ? state.products : Object.keys(state.locIndex).map(k=>({name:k, key:k}));
 
   let scored = pool
@@ -1142,7 +1507,6 @@ function renderLookup(){
     const loc = state.locIndex?.[p.key];
     let locText = loc ? formatLoc(loc) : "Chưa gán vị trí";
 
-    // filter by shelf
     if(shelfFilter){
       if(!loc || loc.shelfId !== shelfFilter) return;
     }
@@ -1172,11 +1536,12 @@ function renderLookup(){
 
     item.querySelector('[data-act="jump"]').addEventListener("click", ()=>{
       if(!loc){ toast("Sản phẩm chưa gán vị trí"); return; }
-      // switch tab layout and select shelf/tray
       document.querySelector('.tab[data-tab="layout"]').click();
       $("shelfSelect").value = loc.shelfId;
       ensureTraySelect();
       $("traySelect").value = loc.trayId;
+      selectedPos = loc.pos;
+      renderTrayGrid();
       renderTrayList();
       toast("Đã mở đúng kệ/mâm");
     });
@@ -1190,7 +1555,7 @@ function renderLookup(){
   }
 }
 
-$("lookupInput").addEventListener("input", debounce(renderLookup, 180));
+$("lookupInput").addEventListener("input", debounce(renderLookup, 160));
 $("lookupShelf").addEventListener("change", renderLookup);
 
 /* =========================
@@ -1216,13 +1581,10 @@ $("jsonFile").addEventListener("change", async ()=>{
   try{
     const text = await f.text();
     const obj = JSON.parse(text);
-
-    // basic validation/repair
     if(!obj || typeof obj !== "object") throw new Error("invalid");
     obj.products ??= [];
     obj.shelves ??= [];
     obj.locIndex ??= {};
-
     state = obj;
     save();
     renderAll();
@@ -1248,27 +1610,27 @@ $("resetAllBtn").addEventListener("click", ()=>{
 function renderLayout(){
   ensureShelfSelect();
   ensureTraySelect();
+  renderTrayGrid();
   renderTrayList();
   renderLookupShelves();
-}
-
-function renderAll(){
-  refreshStatus();
-  renderLookup();
-  renderLayout();
-  renderProducts();
-}
-
-function renderProductsSafe(){
-  renderProducts();
 }
 
 /* =========================
    Init
 ========================= */
 load();
-save(); // refresh pill
-renderAll();
+save();
+renderProducts();
+renderLookup();
+renderLayout();
+refreshStatus();
+
+function renderAll(){
+  refreshStatus();
+  renderProducts();
+  renderLookup();
+  renderLayout();
+}
 </script>
 </body>
 </html>
