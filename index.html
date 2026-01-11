@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"/>
-  <title>VỊ TRÍ + TỒN KHO</title>
+  <title>VỊ TRÍ + TỒN KHO (SKU)</title>
 
   <!-- Excel reader (SheetJS) -->
   <script src="https://cdn.jsdelivr.net/npm/xlsx@0.19.3/dist/xlsx.full.min.js"></script>
@@ -36,8 +36,7 @@
     .wrap{max-width:1100px;margin:0 auto}
     .top{
       display:flex; gap:12px; align-items:flex-start; justify-content:space-between;
-      margin-bottom:12px;
-      flex-wrap:wrap;
+      margin-bottom:12px; flex-wrap:wrap;
     }
     .brand{display:flex; gap:10px; align-items:center;}
     .logo{
@@ -46,19 +45,13 @@
       box-shadow: 0 12px 25px rgba(25,118,210,.22);
       display:grid;place-items:center;
       color:#fff; font-weight:900;
-      flex: 0 0 auto;
+      flex:0 0 auto;
     }
     .title h1{font-size:18px;margin:0}
     .title p{margin:2px 0 0; color:var(--muted); font-size:13px}
-
     .topRight{
-      display:flex;
-      gap:8px;
-      flex-wrap:wrap;
-      align-items:center;
-      justify-content:flex-end;
+      display:flex; gap:8px; flex-wrap:wrap; align-items:center; justify-content:flex-end;
     }
-
     .pill{
       padding:6px 10px;border-radius:999px;
       background:#f1f5f9;border:1px solid var(--border);
@@ -70,15 +63,12 @@
     .warn{background:#fff4e5; color:#7c2d12; border-color: rgba(239,108,0,.25)}
     .bad{background:#ffe8e8; color:#7f1d1d; border-color: rgba(211,50,47,.25)}
 
-    .tabs{
-      display:flex; gap:8px; flex-wrap:wrap;
-      margin-bottom:12px;
-    }
+    .tabs{display:flex; gap:8px; flex-wrap:wrap; margin-bottom:12px;}
     .tab{
       border:1px solid var(--border);
       background:#fff;
       padding:10px 12px;
-      border-radius: 14px;
+      border-radius:14px;
       cursor:pointer;
       font-weight:900;
       color:#0f172a;
@@ -90,29 +80,24 @@
     }
 
     .row{display:grid; gap:12px}
-    @media (min-width:980px){
-      .row{grid-template-columns: 1fr 1fr;}
-    }
+    @media (min-width:980px){ .row{grid-template-columns: 1fr 1fr;} }
+
     .card{
       background:var(--card);
       border:1px solid var(--border);
-      border-radius: var(--r);
-      box-shadow: var(--shadow);
+      border-radius:var(--r);
+      box-shadow:var(--shadow);
       padding:14px;
     }
-    .card h2{
-      margin:0 0 10px;
-      font-size:15px;
-      display:flex; gap:8px; align-items:center;
-    }
+    .card h2{margin:0 0 10px; font-size:15px; display:flex; gap:8px; align-items:center;}
     .hint{color:var(--muted); font-size:12.5px; margin:0 0 10px;}
     label{font-size:12px; color:var(--muted); display:block; margin:0 0 6px;}
     input, select, textarea{
       width:100%;
       border:1px solid var(--border);
       background:#fff;
-      border-radius: 14px;
-      padding: 12px 12px;
+      border-radius:14px;
+      padding:12px 12px;
       font-size:15px;
       outline:none;
       transition:.15s;
@@ -122,10 +107,11 @@
       border-color: rgba(25,118,210,.65);
       box-shadow:0 0 0 4px rgba(25,118,210,.12)
     }
+
     .btns{display:flex; gap:10px; flex-wrap:wrap; margin-top:10px;}
     button{
-      border:0; border-radius: 14px;
-      padding: 11px 12px;
+      border:0; border-radius:14px;
+      padding:11px 12px;
       font-weight:900;
       cursor:pointer;
       background:#eaf2ff;
@@ -144,20 +130,18 @@
     .list{display:grid; gap:10px;}
     .item{
       border:1px solid var(--border);
-      border-radius: 16px;
+      border-radius:16px;
       padding:12px;
       background:#fff;
       display:grid; gap:10px;
     }
-    .itemTop{
-      display:flex; gap:10px; align-items:flex-start; justify-content:space-between;
-    }
+    .itemTop{display:flex; gap:10px; align-items:flex-start; justify-content:space-between;}
     .name{font-weight:900;font-size:15px;line-height:1.25;}
     .meta{margin-top:4px;color:var(--muted);font-size:12.5px;}
     .actions{display:flex; gap:8px; justify-content:flex-end; flex-wrap:wrap;}
     .actions button{padding:9px 10px;border-radius:12px;font-weight:900;font-size:13px;}
     .small{font-size:12px;color:var(--muted)}
-    .mono{font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;}
+    .mono{font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace;}
     .grid2{display:grid; gap:10px; grid-template-columns:1fr;}
     @media (min-width:520px){ .grid2{grid-template-columns:1fr 1fr;} }
 
@@ -166,16 +150,14 @@
       padding:6px 10px;border-radius:999px;
       border:1px solid var(--border);
       background:#f8fafc;
-      font-size:12px;
-      color:var(--muted);
-      font-weight:900;
+      font-size:12px; color:var(--muted); font-weight:900;
     }
     .tag strong{color:#0f172a}
 
     /* Tray Grid */
     .gridWrap{
       border:1px solid var(--border);
-      border-radius: 18px;
+      border-radius:18px;
       background:#fff;
       padding:12px;
     }
@@ -191,23 +173,18 @@
       grid-template-columns: repeat(5, 1fr);
       gap:8px;
     }
-    @media (min-width:520px){
-      .grid{ grid-template-columns: repeat(6, 1fr); }
-    }
-    @media (min-width:820px){
-      .grid{ grid-template-columns: repeat(8, 1fr); }
-    }
+    @media (min-width:520px){ .grid{ grid-template-columns: repeat(6, 1fr); } }
+    @media (min-width:820px){ .grid{ grid-template-columns: repeat(8, 1fr); } }
+
     .cell{
       border:1px solid var(--border);
-      border-radius: 14px;
+      border-radius:14px;
       padding:10px 10px;
       background:#f8fafc;
       cursor:pointer;
-      min-height:64px;
-      display:flex;
-      flex-direction:column;
-      gap:6px;
-      justify-content:space-between;
+      min-height:72px;
+      display:flex; flex-direction:column;
+      gap:6px; justify-content:space-between;
     }
     .cell .pos{
       font-size:12px; color:var(--muted); font-weight:900;
@@ -226,6 +203,7 @@
     .badge.ok{background:#e8f7ee; color:#14532d; border-color: rgba(27,94,32,.2)}
     .badge.warn{background:#fff4e5; color:#7c2d12; border-color: rgba(239,108,0,.25)}
     .badge.bad{background:#ffe8e8; color:#7f1d1d; border-color: rgba(211,50,47,.25)}
+
     .cell .pname{
       font-size:12.5px; font-weight:900;
       line-height:1.15;
@@ -235,11 +213,12 @@
       -webkit-box-orient:vertical;
       overflow:hidden;
     }
-    .cell .qtyline{
-      font-size:12px;
-      font-weight:900;
+    .cell .sku{
+      font-size:11.5px;
       color:var(--muted);
+      font-weight:900;
     }
+
     .cell.empty .pname{color:var(--muted); font-weight:800}
     .cell.filled{
       background: linear-gradient(135deg, rgba(25,118,210,.08), rgba(100,181,246,.10));
@@ -261,22 +240,18 @@
     .modal{
       width:min(1100px,100%);
       background:#fff;
-      border-radius: 18px 18px 0 0;
+      border-radius:18px 18px 0 0;
       padding:14px;
       border:1px solid var(--border);
       box-shadow: 0 -20px 50px rgba(0,0,0,.25);
-      max-height: 86vh;
-      overflow:auto;
+      max-height:86vh; overflow:auto;
     }
-    .modalHead{
-      display:flex; align-items:center; justify-content:space-between; gap:10px;
-      margin-bottom:10px;
-    }
+    .modalHead{display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:10px;}
     .modalHead h3{margin:0; font-size:15px;}
     .xbtn{
       border:1px solid var(--border);
       background:#fff;
-      border-radius: 12px;
+      border-radius:12px;
       padding:8px 10px;
       font-weight:900;
       cursor:pointer;
@@ -298,7 +273,7 @@
       display:flex; align-items:center; gap:8px;
       padding:8px 10px;
       border:1px solid var(--border);
-      border-radius: 14px;
+      border-radius:14px;
       background:#fff;
       font-size:13px;
       color:#0f172a;
@@ -306,15 +281,8 @@
     }
     .toggle input{width:auto}
 
-    /* Stock mini panel */
-    .stockPanel{
-      display:flex; gap:8px; flex-wrap:wrap; align-items:center; justify-content:flex-end;
-    }
-    .stockPanel button{
-      padding:10px 12px;
-      border-radius:14px;
-      font-weight:900;
-    }
+    .stockPanel{display:flex; gap:8px; flex-wrap:wrap; align-items:center; justify-content:flex-end;}
+    .stockPanel button{padding:10px 12px; border-radius:14px; font-weight:900;}
   </style>
 </head>
 
@@ -324,8 +292,8 @@
     <div class="brand">
       <div class="logo">VT</div>
       <div class="title">
-        <h1>Vị trí sản phẩm + Tồn kho</h1>
-        <p>Upload tồn kho (CSV/Excel) → hiển thị tồn ngay trên mâm (grid + list).</p>
+        <h1>Vị trí sản phẩm + Tồn kho (khớp theo SKU)</h1>
+        <p>Import tồn kho theo <b>Mã sản phẩm cơ sở</b> → hiển thị tồn trong mâm.</p>
       </div>
     </div>
 
@@ -349,13 +317,13 @@
 
   <!-- LOOKUP -->
   <div id="tab-lookup" class="card">
-    <h2>Tra cứu vị trí theo tên sản phẩm</h2>
-    <p class="hint">Gõ tên (có thể gõ một phần). Nếu có file tồn kho, kết quả cũng sẽ hiện “Tồn”.</p>
+    <h2>Tra cứu (tìm theo TÊN hoặc SKU)</h2>
+    <p class="hint">Gõ tên hoặc SKU. Kết quả hiện vị trí + tồn kho (nếu đã import).</p>
 
     <div class="grid2">
       <div>
-        <label>Tìm sản phẩm</label>
-        <input id="lookupInput" placeholder="VD: mì hảo hảo..." autocomplete="off"/>
+        <label>Tìm sản phẩm / SKU</label>
+        <input id="lookupInput" placeholder="VD: 893... hoặc BÚN... " autocomplete="off"/>
       </div>
       <div>
         <label>Lọc theo kệ (tuỳ chọn)</label>
@@ -426,1576 +394,11 @@
 
         <div class="divider"></div>
 
-        <h2>Thiết lập cột tồn kho (nếu tool đoán sai)</h2>
-        <p class="hint">Upload file tồn kho ở nút trên cùng. Sau đó chọn cột đúng rồi bấm “Tạo danh mục tồn”.</p>
-
-        <div class="grid2">
-          <div>
-            <label>Cột tên sản phẩm</label>
-            <select id="stockColName" disabled>
-              <option value="">(Chưa có dữ liệu)</option>
-            </select>
-          </div>
-          <div>
-            <label>Cột số tồn</label>
-            <select id="stockColQty" disabled>
-              <option value="">(Chưa có dữ liệu)</option>
-            </select>
-          </div>
-        </div>
-
-        <div class="btns">
-          <button class="primary" id="buildStockBtn" disabled>✅ Tạo danh mục tồn</button>
-          <button class="ghost" id="refreshFromStockBtn" disabled>🔄 Cập nhật hiển thị</button>
-        </div>
-
-        <p class="small" id="stockInfo" style="margin-top:10px;"></p>
-
-        <p class="small" id="layoutInfo" style="margin-top:10px;"></p>
-      </div>
-
-      <div class="card">
-        <h2>Mâm dạng lưới vị trí</h2>
+        <h2>Thiết lập cột tồn kho (khớp theo SKU)</h2>
         <p class="hint">
-          Chạm vào ô để chọn vị trí. Sau đó bấm <b>Gán nhanh</b> để gán từ ô đó (hoặc từ vị trí trống tiếp theo).
-          Nếu có tồn kho, mỗi ô sẽ hiện tồn của sản phẩm.
+          File tồn bạn gửi: SKU = <b>Mã sản phẩm cơ sở</b>, Tồn = <b>Tồn kho hiện tại</b>. Tool sẽ tự chọn sẵn.
         </p>
 
-        <div class="gridWrap">
-          <div class="gridHead">
-            <div class="left" id="gridTags"></div>
-            <div class="right">
-              <span class="tag">Đã gán: <strong id="assignedCount">0</strong></span>
-              <span class="tag">Trống: <strong id="emptyCount">0</strong></span>
-            </div>
-          </div>
-
-          <div class="grid2">
-            <div>
-              <label>Tìm nhanh trong mâm</label>
-              <input id="traySearch" placeholder="gõ để lọc list bên dưới..." autocomplete="off"/>
-            </div>
-            <div>
-              <label>Sắp xếp list</label>
-              <select id="traySort">
-                <option value="posAsc">Vị trí ↑</option>
-                <option value="posDesc">Vị trí ↓</option>
-                <option value="nameAsc">Tên A→Z</option>
-                <option value="nameDesc">Tên Z→A</option>
-              </select>
-            </div>
-          </div>
-
-          <div class="divider"></div>
-
-          <div id="trayGrid" class="grid"></div>
-
-          <div class="divider"></div>
-
-          <div class="grid2">
-            <div>
-              <div class="pill" id="selectedInfo">Chưa chọn ô</div>
-            </div>
-            <div class="btns" style="justify-content:flex-end;margin-top:0">
-              <button class="ghost" id="copySelectedBtn">📋 Copy</button>
-              <button class="ghost" id="replaceSelectedBtn">🔁 Thay SP</button>
-              <button class="danger" id="clearSelectedBtn">🗑️ Xoá ô</button>
-            </div>
-          </div>
-        </div>
-
-        <div class="divider"></div>
-
-        <h2>Danh sách trong mâm (dạng list)</h2>
-        <div id="trayList" class="list"></div>
-        <p id="trayEmpty" class="small">Chưa có sản phẩm trong mâm này.</p>
-      </div>
-    </div>
-  </div>
-
-  <!-- PRODUCTS -->
-  <div id="tab-products" class="hidden">
-    <div class="row">
-      <div class="card">
-        <h2>Nhập danh sách sản phẩm (master)</h2>
-        <p class="hint">Mỗi dòng 1 sản phẩm. Ví dụ: <b>MÌ HẢO HẢO TÔM CHUA CAY 75G</b></p>
-        <textarea id="productTextarea" placeholder="Dán danh sách sản phẩm vào đây..."></textarea>
-        <div class="btns">
-          <button class="primary" id="addProductsBtn">✅ Thêm / cập nhật danh sách</button>
-          <button class="ghost" id="importCSVBtn">⬆️ Import CSV (tên SP)</button>
-          <input id="csvFile" type="file" accept=".csv" class="hidden" />
-          <button class="danger" id="clearProductsBtn">🗑️ Xoá danh sách SP</button>
-        </div>
-        <p class="small" id="productStats"></p>
-      </div>
-
-      <div class="card">
-        <h2>Danh sách sản phẩm hiện có</h2>
         <div class="grid2">
           <div>
-            <label>Tìm trong master</label>
-            <input id="masterSearch" placeholder="gõ để lọc..." autocomplete="off"/>
-          </div>
-          <div>
-            <label>Hiển thị</label>
-            <select id="masterLimit">
-              <option value="50">50 dòng</option>
-              <option value="150">150 dòng</option>
-              <option value="500">500 dòng</option>
-            </select>
-          </div>
-        </div>
-        <div class="divider"></div>
-        <div id="masterList" class="list"></div>
-        <p id="masterEmpty" class="small">Chưa có sản phẩm. Hãy nhập danh sách ở bên trái.</p>
-      </div>
-    </div>
-  </div>
-
-  <!-- BACKUP -->
-  <div id="tab-backup" class="card hidden">
-    <h2>Sao lưu / khôi phục</h2>
-    <p class="hint">Dữ liệu lưu trong máy (localStorage). Bạn nên export JSON để backup.</p>
-
-    <div class="btns">
-      <button class="primary" id="exportBtn">⬇️ Export JSON</button>
-      <button class="ghost" id="importBtn">⬆️ Import JSON</button>
-      <input id="jsonFile" type="file" accept=".json" class="hidden" />
-      <button class="danger" id="resetAllBtn">🧨 Xoá tất cả dữ liệu</button>
-    </div>
-
-    <div class="divider"></div>
-    <p class="small mono" id="backupInfo"></p>
-  </div>
-</div>
-
-<!-- MODAL: Quick assign -->
-<div class="modalBack" id="modalBack">
-  <div class="modal">
-    <div class="modalHead">
-      <h3 id="modalTitle">Gán nhanh</h3>
-      <button class="xbtn" id="closeModal">✕</button>
-    </div>
-
-    <div class="grid2">
-      <div>
-        <label>Tìm sản phẩm (master)</label>
-        <input id="modalSearch" placeholder="gõ tên sản phẩm..." autocomplete="off"/>
-      </div>
-
-      <div>
-        <label>Vị trí bắt đầu</label>
-        <input id="modalPos" inputmode="numeric" placeholder="VD: 1" />
-      </div>
-    </div>
-
-    <div class="grid2" style="margin-top:10px">
-      <div class="toggle">
-        <input type="checkbox" id="skipUsedToggle" checked />
-        <span>Luôn nhảy tới <b>vị trí trống</b> (tự bỏ qua ô đã có)</span>
-      </div>
-      <div class="toggle">
-        <input type="checkbox" id="autoCloseToggle" />
-        <span>Tự đóng khi gán xong (tuỳ bạn)</span>
-      </div>
-    </div>
-
-    <p class="hint" style="margin-top:10px">
-      ✅ Chế độ gán nhanh: <b>chạm sản phẩm</b> → gán vào vị trí hiện tại → tự tăng lên vị trí tiếp theo.
-    </p>
-
-    <div class="divider"></div>
-    <div id="modalPickList" class="list"></div>
-    <p id="modalEmpty" class="small">Gõ để tìm sản phẩm rồi chạm để gán.</p>
-
-    <div class="divider"></div>
-    <div class="btns">
-      <button class="ghost" id="undoAssignBtn">↩️ Hoàn tác 1 bước</button>
-      <button class="primary" id="finishAssignBtn">✅ Xong</button>
-    </div>
-    <p class="small" id="modalNote" style="margin-top:10px;"></p>
-  </div>
-</div>
-
-<div id="toast">OK</div>
-
-<script>
-/* =========================
-   Data model
-========================= */
-const LS_KEY = "vitri_sanpham_v3_with_stock";
-
-function removeAccents(str){
-  return (str || "")
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "");
-}
-function norm(str){
-  const s = String(str ?? "").trim().replace(/\s+/g," ");
-  return removeAccents(s).toUpperCase();
-}
-function uid(prefix="ID"){
-  return prefix + "_" + Math.random().toString(36).slice(2,10).toUpperCase();
-}
-function debounce(fn, ms=200){
-  let t;
-  return (...args)=>{ clearTimeout(t); t=setTimeout(()=>fn(...args), ms); };
-}
-function toInt(v){
-  const n = parseInt(String(v ?? "").trim(), 10);
-  return Number.isFinite(n) ? n : null;
-}
-function toNumber(v){
-  if(v === null || v === undefined) return NaN;
-  const s0 = String(v).trim();
-  if(!s0) return NaN;
-
-  // remove spaces
-  const s = s0.replace(/\s+/g,"");
-
-  // handle Việt: 1.234 -> 1234 (khi đúng format nhóm 3)
-  const vn = /^\d{1,3}(\.\d{3})+$/.test(s) ? s.replace(/\./g,'') : s;
-
-  // remove commas
-  const clean = vn.replace(/,/g,'');
-
-  const n = Number(clean);
-  return Number.isFinite(n) ? n : NaN;
-}
-
-/* =========================
-   Stock file parsers
-========================= */
-function parseCSV(text){
-  const lines = text.replace(/\r/g,'').split('\n').filter(l=>l.trim().length>0);
-  if(lines.length===0) return {headers:[], rows:[]};
-
-  const parseLine = (line)=>{
-    const out=[];
-    let cur='', inQ=false;
-    for(let i=0;i<line.length;i++){
-      const ch=line[i];
-      if(ch === '"' ){
-        if(inQ && line[i+1] === '"'){ cur += '"'; i++; }
-        else inQ = !inQ;
-      } else if(ch === ',' && !inQ){
-        out.push(cur); cur='';
-      } else {
-        cur += ch;
-      }
-    }
-    out.push(cur);
-    return out.map(x=>x.trim());
-  };
-
-  const h = parseLine(lines[0]);
-  const rs = [];
-  for(let i=1;i<lines.length;i++){
-    const cols = parseLine(lines[i]);
-    const obj = {};
-    for(let j=0;j<h.length;j++) obj[h[j]] = cols[j] ?? '';
-    rs.push(obj);
-  }
-  return {headers:h, rows:rs};
-}
-
-function parseExcel(arrayBuffer){
-  const wb = XLSX.read(arrayBuffer, {type:'array'});
-  const sheetName = wb.SheetNames[0];
-  const ws = wb.Sheets[sheetName];
-  const json = XLSX.utils.sheet_to_json(ws, {defval:''});
-  const hs = json.length ? Object.keys(json[0]) : [];
-  return {headers:hs, rows:json};
-}
-
-let state = {
-  products: [], // [{id, name, key}]
-  shelves: [],  // [{id, name, positionsPerTray, trays:[{id,name, slots:[{pos, productKey}]}]}]
-  locIndex: {}, // productKey -> {shelfId, trayId, pos}
-
-  stock: {
-    // map: productKey -> qty
-    index: {},
-    fileName: "",
-    updatedAt: "",
-    colName: "",
-    colQty: "",
-    rowsCount: 0,
-    keysCount: 0
-  }
-};
-
-function load(){
-  try{
-    const raw = localStorage.getItem(LS_KEY);
-    if(raw){
-      state = JSON.parse(raw);
-      state.products ??= [];
-      state.shelves ??= [];
-      state.locIndex ??= {};
-      state.stock ??= {index:{}, fileName:"", updatedAt:"", colName:"", colQty:"", rowsCount:0, keysCount:0};
-      state.stock.index ??= {};
-    }
-  }catch(e){}
-}
-function save(){
-  localStorage.setItem(LS_KEY, JSON.stringify(state));
-  refreshStatus();
-}
-
-/* =========================
-   UI helpers
-========================= */
-const $ = (id)=>document.getElementById(id);
-
-const statusPill = $("statusPill");
-const stockPill  = $("stockPill");
-function refreshStatus(){
-  const p = state.products.length;
-  const s = state.shelves.length;
-  const a = Object.keys(state.locIndex || {}).length;
-
-  statusPill.className = "pill " + (a ? "ok" : (p || s ? "warn" : ""));
-  statusPill.textContent = `SP: ${p} • Kệ: ${s} • Đã gán: ${a}`;
-
-  const stockKeys = Object.keys(state.stock.index || {}).length;
-  if(stockKeys){
-    stockPill.className = "pill ok";
-    const time = state.stock.updatedAt ? new Date(state.stock.updatedAt).toLocaleString() : "";
-    stockPill.textContent = `Tồn: ${stockKeys} SP • ${state.stock.fileName || "file"} ${time ? "• " + time : ""}`;
-  }else{
-    stockPill.className = "pill";
-    stockPill.textContent = "Tồn: chưa có file";
-  }
-
-  $("backupInfo").textContent =
-    `products=${p}, shelves=${s}, assigned=${a}, stockKeys=${stockKeys}, key=${LS_KEY}`;
-}
-
-let toastTimer=null;
-function toast(msg){
-  const t = $("toast");
-  t.textContent = msg;
-  t.style.opacity = "1";
-  clearTimeout(toastTimer);
-  toastTimer = setTimeout(()=> t.style.opacity="0", 1100);
-}
-
-function escapeHtml(s){
-  return String(s ?? "")
-    .replaceAll("&","&amp;").replaceAll("<","&lt;")
-    .replaceAll(">","&gt;").replaceAll('"',"&quot;").replaceAll("'","&#039;");
-}
-
-function qtyClass(q){
-  if(q === null) return "";
-  if(!Number.isFinite(q)) return "";
-  if(q <= 0) return "bad";
-  if(q < 5) return "warn";
-  return "ok";
-}
-function fmtQty(q){
-  if(q === null || q === undefined) return "—";
-  if(!Number.isFinite(q)) return "—";
-  return String(q);
-}
-function getStockQtyByKey(productKey){
-  const idx = state.stock.index || {};
-  if(productKey in idx) return idx[productKey];
-  return null;
-}
-
-/* =========================
-   Tabs
-========================= */
-document.querySelectorAll(".tab").forEach(tab=>{
-  tab.addEventListener("click", ()=>{
-    document.querySelectorAll(".tab").forEach(t=>t.classList.remove("active"));
-    tab.classList.add("active");
-    const key = tab.dataset.tab;
-    ["lookup","layout","products","backup"].forEach(k=>{
-      const el = $("tab-"+k);
-      if(k===key) el.classList.remove("hidden");
-      else el.classList.add("hidden");
-    });
-    renderAll();
-  });
-});
-
-/* =========================
-   Stock upload + mapping
-========================= */
-let stockRawRows = [];
-let stockHeaders = [];
-
-function setStockInfo(text, type=""){
-  const el = $("stockInfo");
-  el.innerHTML = text;
-  el.className = "small " + (type ? type : "");
-}
-
-function fillStockSelects(headers){
-  stockHeaders = headers.slice();
-  const colName = $("stockColName");
-  const colQty  = $("stockColQty");
-
-  const fill = (sel)=>{
-    sel.innerHTML = "";
-    const opt0 = document.createElement("option");
-    opt0.value = ""; opt0.textContent = "(Chọn cột)";
-    sel.appendChild(opt0);
-    headers.forEach(h=>{
-      const op = document.createElement("option");
-      op.value = h; op.textContent = h;
-      sel.appendChild(op);
-    });
-  };
-  fill(colName);
-  fill(colQty);
-
-  colName.disabled = false;
-  colQty.disabled  = false;
-  $("buildStockBtn").disabled = false;
-  $("refreshFromStockBtn").disabled = false;
-
-  // auto guess
-  const normH = headers.map(h=>({h, t: removeAccents(String(h)).toLowerCase()}));
-  const pickName = normH.find(x =>
-    (x.t.includes("ten") && (x.t.includes("sp") || x.t.includes("san") || x.t.includes("product") || x.t.includes("hang") || x.t.includes("name")))
-  ) || normH.find(x=> x.t.includes("ten") || x.t.includes("name") || x.t.includes("product"));
-
-  const pickQty = normH.find(x =>
-    x.t.includes("ton") || x.t.includes("qty") || x.t.includes("so luong") || x.t.includes("stock") || x.t === "sl"
-  );
-
-  if(pickName) colName.value = pickName.h;
-  if(pickQty)  colQty.value  = pickQty.h;
-
-  // load previous picks if exist
-  if(state.stock.colName && headers.includes(state.stock.colName)) colName.value = state.stock.colName;
-  if(state.stock.colQty && headers.includes(state.stock.colQty)) colQty.value   = state.stock.colQty;
-
-  setStockInfo(`Đã nạp dữ liệu tồn: <b>${headers.length}</b> cột • <b>${stockRawRows.length}</b> dòng. Chọn cột rồi bấm <b>Tạo danh mục tồn</b>.`, "ok");
-}
-
-function buildStockIndex(){
-  const nameCol = $("stockColName").value;
-  const qtyCol  = $("stockColQty").value;
-
-  if(!nameCol || !qtyCol){
-    setStockInfo("⚠️ Bạn cần chọn đủ cột Tên SP và cột Tồn.", "bad");
-    return;
-  }
-
-  const map = {};
-  let used=0, skipped=0;
-
-  for(const r of stockRawRows){
-    const name = r[nameCol];
-    const key = norm(name);
-    if(!key){ skipped++; continue; }
-
-    const qty = toNumber(r[qtyCol]);
-    const add = Number.isFinite(qty) ? qty : 0;
-
-    map[key] = (map[key] ?? 0) + add;
-    used++;
-  }
-
-  state.stock.index = map;
-  state.stock.colName = nameCol;
-  state.stock.colQty  = qtyCol;
-  state.stock.rowsCount = stockRawRows.length;
-  state.stock.keysCount = Object.keys(map).length;
-  state.stock.updatedAt = new Date().toISOString();
-
-  save();
-
-  setStockInfo(`✅ Đã tạo danh mục tồn: <b>${state.stock.keysCount}</b> sản phẩm (đọc ${used} dòng, bỏ ${skipped} dòng).`, "ok");
-  toast("Đã tạo danh mục tồn");
-  renderAll();
-}
-
-$("buildStockBtn").addEventListener("click", buildStockIndex);
-$("refreshFromStockBtn").addEventListener("click", ()=>{
-  toast("Đã cập nhật hiển thị");
-  renderAll();
-});
-
-$("uploadStockBtn").addEventListener("click", ()=> $("stockFile").click());
-
-$("stockFile").addEventListener("change", async ()=>{
-  const f = $("stockFile").files?.[0];
-  if(!f) return;
-
-  try{
-    const ext = (f.name.split(".").pop() || "").toLowerCase();
-
-    setStockInfo("Đang đọc file tồn...", "warn");
-    if(ext === "csv"){
-      const text = await f.text();
-      const parsed = parseCSV(text);
-      stockRawRows = parsed.rows;
-      fillStockSelects(parsed.headers);
-    }else if(ext === "xlsx" || ext === "xls"){
-      const buf = await f.arrayBuffer();
-      const parsed = parseExcel(buf);
-      stockRawRows = parsed.rows;
-      fillStockSelects(parsed.headers);
-    }else{
-      setStockInfo("❌ Định dạng không hỗ trợ. Chỉ nhận CSV/XLSX/XLS.", "bad");
-      stockRawRows = [];
-      stockHeaders = [];
-      return;
-    }
-
-    state.stock.fileName = f.name;
-    save();
-    toast("Đã nạp file tồn");
-  }catch(e){
-    console.error(e);
-    setStockInfo("❌ Lỗi đọc file tồn.", "bad");
-  }finally{
-    $("stockFile").value = "";
-  }
-});
-
-$("clearStockBtn").addEventListener("click", ()=>{
-  stockRawRows = [];
-  stockHeaders = [];
-  state.stock = {index:{}, fileName:"", updatedAt:"", colName:"", colQty:"", rowsCount:0, keysCount:0};
-  save();
-  $("stockColName").innerHTML = `<option value="">(Chưa có dữ liệu)</option>`;
-  $("stockColQty").innerHTML  = `<option value="">(Chưa có dữ liệu)</option>`;
-  $("stockColName").disabled = true;
-  $("stockColQty").disabled  = true;
-  $("buildStockBtn").disabled = true;
-  $("refreshFromStockBtn").disabled = true;
-  setStockInfo("Đã bỏ tồn kho.", "warn");
-  renderAll();
-  toast("Đã bỏ tồn");
-});
-
-/* =========================
-   Products (master)
-========================= */
-function mergeProductsFromLines(lines){
-  const set = new Map(state.products.map(p=>[p.key, p]));
-  let added=0;
-  for(const line of lines){
-    const name = String(line ?? "").trim();
-    if(!name) continue;
-    const key = norm(name);
-    if(!key) continue;
-    if(!set.has(key)){
-      const obj = {id: uid("SP"), name, key};
-      set.set(key, obj);
-      added++;
-    }
-  }
-  state.products = Array.from(set.values())
-    .sort((a,b)=>a.name.localeCompare(b.name,"vi"));
-  save();
-  toast(`Đã cập nhật danh sách (+${added})`);
-}
-
-$("addProductsBtn").addEventListener("click", ()=>{
-  const lines = $("productTextarea").value.split("\n").map(s=>s.trim()).filter(Boolean);
-  if(!lines.length){ toast("Chưa có nội dung để thêm"); return; }
-  mergeProductsFromLines(lines);
-  $("productTextarea").value = "";
-  renderProducts();
-  renderLookup();
-});
-
-$("clearProductsBtn").addEventListener("click", ()=>{
-  if(!state.products.length){ toast("Danh sách SP đang trống"); return; }
-  if(confirm("Xoá toàn bộ danh sách sản phẩm (master)?")){
-    state.products = [];
-    save();
-    renderProducts();
-    renderLookup();
-    toast("Đã xoá danh sách SP");
-  }
-});
-
-$("importCSVBtn").addEventListener("click", ()=> $("csvFile").click());
-
-$("csvFile").addEventListener("change", async ()=>{
-  const f = $("csvFile").files?.[0];
-  if(!f) return;
-  const text = await f.text();
-  const lines = parseCSVToNames(text);
-  mergeProductsFromLines(lines);
-  $("csvFile").value = "";
-  renderProducts();
-  renderLookup();
-});
-
-function parseCSVToNames(text){
-  const lines = text.replace(/\r/g,"").split("\n").filter(l=>l.trim().length);
-  if(!lines.length) return [];
-  const parseLine = (line)=>{
-    const out=[];
-    let cur="", inQ=false;
-    for(let i=0;i<line.length;i++){
-      const ch=line[i];
-      if(ch === '"'){
-        if(inQ && line[i+1] === '"'){ cur+='"'; i++; }
-        else inQ = !inQ;
-      }else if(ch === "," && !inQ){
-        out.push(cur); cur="";
-      }else cur += ch;
-    }
-    out.push(cur);
-    return out.map(x=>x.trim());
-  };
-
-  const header = parseLine(lines[0]).map(h=>removeAccents(h).toLowerCase());
-  let idx = 0;
-  const nameIdx = header.findIndex(h=> h.includes("ten") || h.includes("name") || h.includes("product"));
-  if(nameIdx >= 0) idx = nameIdx;
-
-  const out=[];
-  for(let i=1;i<lines.length;i++){
-    const cols = parseLine(lines[i]);
-    const name = cols[idx] ?? cols[0] ?? "";
-    if(String(name).trim()) out.push(String(name).trim());
-  }
-  return out;
-}
-
-function renderProducts(){
-  const q = norm($("masterSearch").value);
-  const limit = parseInt($("masterLimit").value,10) || 50;
-
-  let arr = state.products;
-  if(q){
-    arr = arr.filter(p=> p.key.includes(q));
-  }
-
-  $("productStats").textContent = `Tổng sản phẩm: ${state.products.length} • Đang hiển thị: ${Math.min(arr.length, limit)}`;
-
-  const list = $("masterList");
-  list.innerHTML = "";
-  $("masterEmpty").style.display = state.products.length ? "none" : "block";
-
-  arr.slice(0, limit).forEach(p=>{
-    const loc = state.locIndex?.[p.key];
-    const locText = loc ? formatLoc(loc) : "Chưa gán vị trí";
-    const qv = getStockQtyByKey(p.key);
-    const qcls = qtyClass(qv);
-
-    const item = document.createElement("div");
-    item.className = "item";
-    item.innerHTML = `
-      <div class="itemTop">
-        <div>
-          <div class="name">${escapeHtml(p.name)}</div>
-          <div class="meta">${escapeHtml(locText)}</div>
-          <div class="meta">Tồn: <b class="${qcls}">${escapeHtml(fmtQty(qv))}</b></div>
-          <div class="meta mono">${p.key}</div>
-        </div>
-        <div class="actions">
-          <button class="ghost" data-act="copy">📋 Copy</button>
-        </div>
-      </div>
-    `;
-    item.querySelector('[data-act="copy"]').addEventListener("click", async ()=>{
-      const line = `${p.name} — ${locText} — Tồn: ${fmtQty(qv)}`;
-      try{ await navigator.clipboard.writeText(line); toast("Đã copy"); }
-      catch(e){ alert(line); }
-    });
-    list.appendChild(item);
-  });
-}
-
-$("masterSearch").addEventListener("input", debounce(renderProducts, 200));
-$("masterLimit").addEventListener("change", renderProducts);
-
-/* =========================
-   Shelves / trays / slots
-========================= */
-function ensureShelfSelect(){
-  const sel = $("shelfSelect");
-  sel.innerHTML = "";
-  if(!state.shelves.length){
-    const op = document.createElement("option");
-    op.value = ""; op.textContent = "Chưa có kệ";
-    sel.appendChild(op);
-    sel.disabled = true;
-    return;
-  }
-  sel.disabled = false;
-  state.shelves.forEach(s=>{
-    const op = document.createElement("option");
-    op.value = s.id;
-    op.textContent = s.name;
-    sel.appendChild(op);
-  });
-  if(!sel.value) sel.value = state.shelves[0].id;
-}
-
-function ensureTraySelect(){
-  const shelfId = $("shelfSelect").value;
-  const traySel = $("traySelect");
-  traySel.innerHTML = "";
-  const shelf = state.shelves.find(s=>s.id===shelfId);
-  if(!shelf || !shelf.trays?.length){
-    const op = document.createElement("option");
-    op.value = ""; op.textContent = "Chưa có mâm";
-    traySel.appendChild(op);
-    traySel.disabled = true;
-    return;
-  }
-  traySel.disabled = false;
-  shelf.trays.forEach(t=>{
-    const op = document.createElement("option");
-    op.value = t.id;
-    op.textContent = t.name;
-    traySel.appendChild(op);
-  });
-  if(!traySel.value) traySel.value = shelf.trays[0].id;
-}
-
-function createShelf(name, trayCount, slotsPerTray){
-  const n = String(name ?? "").trim();
-  if(!n){ toast("Nhập tên kệ"); return; }
-  const count = Math.max(1, toInt(trayCount) ?? 5);
-  const slots = Math.max(1, toInt(slotsPerTray) ?? 30);
-
-  const trays = Array.from({length: count}, (_,i)=>({
-    id: uid("MAM"),
-    name: `Mâm ${i+1}`,
-    slots: []
-  }));
-
-  state.shelves.push({
-    id: uid("KE"),
-    name: n,
-    positionsPerTray: slots,
-    trays
-  });
-  save();
-  toast("Đã tạo kệ");
-}
-
-$("createShelfBtn").addEventListener("click", ()=>{
-  createShelf($("newShelfName").value, $("newShelfTrays").value, $("newShelfSlots").value);
-  $("newShelfName").value = "";
-  renderLayout();
-  renderLookup();
-});
-
-$("renameShelfBtn").addEventListener("click", ()=>{
-  const shelfId = $("shelfSelect").value;
-  const shelf = state.shelves.find(s=>s.id===shelfId);
-  if(!shelf){ toast("Chưa chọn kệ"); return; }
-  const n = prompt("Đổi tên kệ:", shelf.name);
-  if(n===null) return;
-  const nn = n.trim();
-  if(!nn){ toast("Tên không hợp lệ"); return; }
-  shelf.name = nn;
-  save();
-  renderLayout();
-  renderLookup();
-  toast("Đã đổi tên kệ");
-});
-
-$("changeSlotsBtn").addEventListener("click", ()=>{
-  const shelf = getSelectedShelf();
-  if(!shelf){ toast("Chưa chọn kệ"); return; }
-  const n = prompt("Số vị trí mỗi mâm (ô lưới):", String(shelf.positionsPerTray ?? 30));
-  if(n===null) return;
-  const slots = toInt(n);
-  if(slots===null || slots<=0){ toast("Số không hợp lệ"); return; }
-  shelf.positionsPerTray = slots;
-  save();
-  renderTrayGrid();
-  toast("Đã đổi số vị trí/mâm");
-});
-
-$("deleteShelfBtn").addEventListener("click", ()=>{
-  const shelfId = $("shelfSelect").value;
-  const shelf = state.shelves.find(s=>s.id===shelfId);
-  if(!shelf){ toast("Chưa chọn kệ"); return; }
-
-  const assignedInShelf = countAssignedInShelf(shelfId);
-  const msg = assignedInShelf
-    ? `Kệ này đang có ${assignedInShelf} SP đã gán. Xoá kệ sẽ xoá luôn các vị trí đó. Tiếp tục?`
-    : "Xoá kệ này?";
-
-  if(!confirm(msg)) return;
-
-  const keysToRemove = Object.keys(state.locIndex).filter(k=>state.locIndex[k].shelfId === shelfId);
-  keysToRemove.forEach(k=> delete state.locIndex[k]);
-
-  state.shelves = state.shelves.filter(s=>s.id!==shelfId);
-  save();
-  renderLayout();
-  renderLookup();
-  toast("Đã xoá kệ");
-});
-
-function countAssignedInShelf(shelfId){
-  let c=0;
-  for(const k in state.locIndex){
-    if(state.locIndex[k].shelfId === shelfId) c++;
-  }
-  return c;
-}
-
-$("shelfSelect").addEventListener("change", ()=>{
-  ensureTraySelect();
-  selectedPos = null;
-  renderTrayGrid();
-  renderTrayList();
-  renderLookupShelves();
-});
-
-$("traySelect").addEventListener("change", ()=>{
-  selectedPos = null;
-  renderTrayGrid();
-  renderTrayList();
-});
-
-$("trayRenameBtn").addEventListener("click", ()=>{
-  const tray = getSelectedTray();
-  if(!tray){ toast("Chưa chọn mâm"); return; }
-  const n = prompt("Đổi tên mâm:", tray.name);
-  if(n===null) return;
-  const nn = n.trim();
-  if(!nn){ toast("Tên không hợp lệ"); return; }
-  tray.name = nn;
-  save();
-  renderLayout();
-  renderLookup();
-  toast("Đã đổi tên mâm");
-});
-
-$("trayClearBtn").addEventListener("click", ()=>{
-  const shelf = getSelectedShelf();
-  const tray = getSelectedTray();
-  if(!shelf || !tray){ toast("Chưa chọn mâm"); return; }
-
-  const count = tray.slots.length;
-  if(!count){ toast("Mâm đang trống"); return; }
-  if(!confirm(`Xoá toàn bộ ${count} SP trong ${shelf.name} - ${tray.name}?`)) return;
-
-  tray.slots.forEach(sl=>{
-    if(state.locIndex[sl.productKey]) delete state.locIndex[sl.productKey];
-  });
-  tray.slots = [];
-  selectedPos = null;
-  save();
-  renderTrayGrid();
-  renderTrayList();
-  renderLookup();
-  toast("Đã xoá SP trong mâm");
-});
-
-function getSelectedShelf(){
-  const id = $("shelfSelect").value;
-  return state.shelves.find(s=>s.id===id);
-}
-function getSelectedTray(){
-  const shelf = getSelectedShelf();
-  if(!shelf) return null;
-  const tid = $("traySelect").value;
-  return shelf.trays.find(t=>t.id===tid);
-}
-
-function formatLoc(loc){
-  const shelf = state.shelves.find(s=>s.id===loc.shelfId);
-  const tray = shelf?.trays?.find(t=>t.id===loc.trayId);
-  const shelfName = shelf?.name ?? "(kệ đã xoá)";
-  const trayName = tray?.name ?? "(mâm đã xoá)";
-  return `${shelfName} • ${trayName} • Vị trí ${loc.pos}`;
-}
-
-/* =========================
-   Tray Grid
-========================= */
-let selectedPos = null;
-
-function getNextFreePos(tray, startPos){
-  const used = new Set((tray.slots || []).map(s => s.pos));
-  let p = Math.max(1, startPos || 1);
-  while(used.has(p)) p++;
-  return p;
-}
-
-function productNameByKey(key){
-  return state.products.find(p=>p.key===key)?.name ?? key;
-}
-
-function slotAtPos(tray, pos){
-  return (tray.slots || []).find(s=>s.pos === pos) || null;
-}
-
-function removeProductFromOldLocation(productKey){
-  const oldLoc = state.locIndex[productKey];
-  if(!oldLoc) return null;
-
-  const oldShelf = state.shelves.find(s=>s.id===oldLoc.shelfId);
-  const oldTray  = oldShelf?.trays?.find(t=>t.id===oldLoc.trayId);
-  if(oldTray){
-    oldTray.slots = oldTray.slots.filter(sl=>sl.productKey !== productKey);
-  }
-  return oldLoc;
-}
-
-function clearPosInCurrentTray(pos){
-  const tray = getSelectedTray();
-  if(!tray) return;
-  const sl = slotAtPos(tray, pos);
-  if(!sl){ toast("Ô đang trống"); return; }
-  if(!confirm(`Xoá "${productNameByKey(sl.productKey)}" khỏi vị trí ${pos}?`)) return;
-
-  tray.slots = tray.slots.filter(s=>s.pos !== pos);
-  delete state.locIndex[sl.productKey];
-  save();
-  renderTrayGrid();
-  renderTrayList();
-  renderLookup();
-  toast("Đã xoá ô");
-}
-
-function renderTrayGrid(){
-  const shelf = getSelectedShelf();
-  const tray = getSelectedTray();
-  const grid = $("trayGrid");
-  grid.innerHTML = "";
-
-  if(!shelf || !tray){
-    $("gridTags").innerHTML = "";
-    $("assignedCount").textContent = "0";
-    $("emptyCount").textContent = "0";
-    $("selectedInfo").textContent = "Chưa chọn ô";
-    return;
-  }
-
-  const maxPos = Math.max(1, shelf.positionsPerTray ?? 30);
-  const used = new Map(tray.slots.map(s=>[s.pos, s.productKey]));
-  const assigned = used.size;
-  const empty = Math.max(0, maxPos - assigned);
-
-  $("assignedCount").textContent = String(assigned);
-  $("emptyCount").textContent = String(empty);
-
-  $("gridTags").innerHTML = `
-    <span class="tag"><strong>${escapeHtml(shelf.name)}</strong></span>
-    <span class="tag"><strong>${escapeHtml(tray.name)}</strong></span>
-    <span class="tag">Ô: <strong>${maxPos}</strong></span>
-  `;
-
-  for(let pos=1; pos<=maxPos; pos++){
-    const key = used.get(pos);
-    const cell = document.createElement("div");
-    const isFilled = !!key;
-    cell.className = "cell " + (isFilled ? "filled" : "empty") + (selectedPos===pos ? " selected" : "");
-
-    let badgeHtml = `<span class="badge">Tồn: —</span>`;
-    let qtyLine = "";
-
-    if(isFilled){
-      const qv = getStockQtyByKey(key);
-      const cls = qtyClass(qv);
-      badgeHtml = `<span class="badge ${cls}">Tồn: ${escapeHtml(fmtQty(qv))}</span>`;
-      qtyLine = `<div class="qtyline">Tồn: ${escapeHtml(fmtQty(qv))}</div>`;
-    }
-
-    cell.innerHTML = `
-      <div class="pos"><span>#${pos}</span>${badgeHtml}</div>
-      <div class="pname">${isFilled ? escapeHtml(productNameByKey(key)) : "Trống"}</div>
-      ${isFilled ? qtyLine : `<div class="qtyline">&nbsp;</div>`}
-    `;
-    cell.addEventListener("click", ()=>{
-      selectedPos = pos;
-      updateSelectedInfo();
-      renderTrayGrid();
-    });
-    grid.appendChild(cell);
-  }
-
-  if(selectedPos === null || selectedPos < 1 || selectedPos > maxPos) selectedPos = null;
-  updateSelectedInfo();
-}
-
-function updateSelectedInfo(){
-  const shelf = getSelectedShelf();
-  const tray = getSelectedTray();
-  if(!shelf || !tray || selectedPos === null){
-    $("selectedInfo").className = "pill";
-    $("selectedInfo").textContent = "Chưa chọn ô";
-    return;
-  }
-  const sl = slotAtPos(tray, selectedPos);
-  if(!sl){
-    $("selectedInfo").className = "pill warn";
-    $("selectedInfo").textContent = `Đang chọn: Vị trí ${selectedPos} (TRỐNG)`;
-  }else{
-    const qv = getStockQtyByKey(sl.productKey);
-    const cls = qtyClass(qv);
-    $("selectedInfo").className = "pill ok";
-    $("selectedInfo").textContent =
-      `Đang chọn: Vị trí ${selectedPos} • ${productNameByKey(sl.productKey)} • Tồn: ${fmtQty(qv)}`;
-  }
-}
-
-$("clearSelectedBtn").addEventListener("click", ()=>{
-  if(selectedPos===null){ toast("Chưa chọn ô"); return; }
-  clearPosInCurrentTray(selectedPos);
-});
-
-$("copySelectedBtn").addEventListener("click", async ()=>{
-  const shelf = getSelectedShelf();
-  const tray = getSelectedTray();
-  if(!shelf || !tray || selectedPos===null){ toast("Chưa chọn ô"); return; }
-  const sl = slotAtPos(tray, selectedPos);
-  const qv = sl ? getStockQtyByKey(sl.productKey) : null;
-
-  const text = sl
-    ? `${productNameByKey(sl.productKey)} — ${shelf.name} / ${tray.name} / Vị trí ${selectedPos} — Tồn: ${fmtQty(qv)}`
-    : `Ô trống — ${shelf.name} / ${tray.name} / Vị trí ${selectedPos}`;
-  try{ await navigator.clipboard.writeText(text); toast("Đã copy"); }
-  catch(e){ alert(text); }
-});
-
-$("replaceSelectedBtn").addEventListener("click", ()=>{
-  if(selectedPos===null){ toast("Chưa chọn ô"); return; }
-  openAssignModal({ startPos: selectedPos });
-});
-
-/* =========================
-   Quick Assign Modal
-========================= */
-let modalAssignPos = 1;
-let modalAssignedCount = 0;
-let modalHistory = [];
-
-function openAssignModal(opts = {}){
-  const shelf = getSelectedShelf();
-  const tray = getSelectedTray();
-  if(!shelf || !tray){
-    toast("Cần chọn kệ và mâm trước");
-    return;
-  }
-
-  modalHistory = [];
-  modalAssignedCount = 0;
-
-  $("modalTitle").textContent = `Gán nhanh: ${shelf.name} → ${tray.name}`;
-  $("modalSearch").value = "";
-  $("modalPickList").innerHTML = "";
-  $("modalEmpty").style.display = "block";
-
-  const basePos = (typeof opts.startPos === "number" && opts.startPos > 0) ? opts.startPos : (selectedPos ?? 1);
-  const skipUsed = $("skipUsedToggle").checked;
-  modalAssignPos = skipUsed ? getNextFreePos(tray, basePos) : Math.max(1, basePos);
-  $("modalPos").value = String(modalAssignPos);
-
-  $("modalNote").innerHTML = `Vị trí bắt đầu: <b>${modalAssignPos}</b> • Chạm SP để gán.`;
-
-  $("modalBack").style.display = "flex";
-  setTimeout(()=> $("modalSearch").focus(), 50);
-}
-
-function closeAssignModal(){
-  $("modalBack").style.display = "none";
-}
-
-$("openAssignBtn").addEventListener("click", ()=> openAssignModal({}));
-
-$("closeModal").addEventListener("click", closeAssignModal);
-$("finishAssignBtn").addEventListener("click", ()=>{
-  closeAssignModal();
-  toast("Đã lưu vị trí");
-});
-$("modalBack").addEventListener("click", (e)=>{
-  if(e.target === $("modalBack")) closeAssignModal();
-});
-
-function assignQuick(productKey){
-  const shelf = getSelectedShelf();
-  const tray = getSelectedTray();
-  if(!shelf || !tray){ toast("Thiếu kệ/mâm"); return; }
-
-  const typed = toInt($("modalPos").value);
-  if(typed !== null) modalAssignPos = typed;
-
-  const skipUsed = $("skipUsedToggle").checked;
-  const pos = skipUsed ? getNextFreePos(tray, modalAssignPos) : Math.max(1, modalAssignPos);
-
-  const maxPos = Math.max(1, shelf.positionsPerTray ?? 30);
-  if(pos > maxPos){
-    toast("Vị trí vượt số ô của mâm");
-    $("modalNote").innerHTML = `⚠️ Vị trí <b>${pos}</b> vượt số ô (<b>${maxPos}</b>). Hãy tăng "Số vị trí/mâm" hoặc đổi vị trí bắt đầu.`;
-    return;
-  }
-
-  const existedSlot = slotAtPos(tray, pos);
-  let replacedKey = null;
-  if(existedSlot && existedSlot.productKey !== productKey){
-    replacedKey = existedSlot.productKey;
-    tray.slots = tray.slots.filter(s=>s.pos !== pos);
-    delete state.locIndex[replacedKey];
-  }
-
-  const oldLoc = state.locIndex[productKey] ? {...state.locIndex[productKey]} : null;
-  removeProductFromOldLocation(productKey);
-
-  tray.slots.push({pos, productKey});
-  tray.slots.sort((a,b)=>a.pos-b.pos);
-  state.locIndex[productKey] = {shelfId: shelf.id, trayId: tray.id, pos};
-
-  modalHistory.push({productKey, newLoc:{shelfId:shelf.id, trayId:tray.id, pos}, oldLoc, replacedKey});
-
-  save();
-
-  modalAssignedCount++;
-  modalAssignPos = pos + 1;
-  $("modalPos").value = String(modalAssignPos);
-
-  const prodName = productNameByKey(productKey);
-  const qv = getStockQtyByKey(productKey);
-  $("modalNote").innerHTML =
-    `Đã gán <b>${escapeHtml(prodName)}</b> → Vị trí <b>${pos}</b> • Tồn: <b>${escapeHtml(fmtQty(qv))}</b> • Tổng đã gán: <b>${modalAssignedCount}</b>`;
-  toast(`Gán vị trí ${pos}`);
-
-  selectedPos = pos;
-  renderTrayGrid();
-  renderTrayList();
-  renderLookup();
-
-  if($("autoCloseToggle").checked){
-    closeAssignModal();
-  }
-}
-
-$("undoAssignBtn").addEventListener("click", ()=>{
-  const last = modalHistory.pop();
-  if(!last){ toast("Không có gì để hoàn tác"); return; }
-
-  const newShelf = state.shelves.find(s=>s.id===last.newLoc.shelfId);
-  const newTray  = newShelf?.trays?.find(t=>t.id===last.newLoc.trayId);
-  if(newTray){
-    newTray.slots = newTray.slots.filter(sl=> !(sl.productKey===last.productKey && sl.pos===last.newLoc.pos));
-  }
-
-  if(last.replacedKey){
-    newTray?.slots?.push({pos:last.newLoc.pos, productKey:last.replacedKey});
-    newTray?.slots?.sort((a,b)=>a.pos-b.pos);
-    if(newShelf && newTray){
-      state.locIndex[last.replacedKey] = {shelfId:newShelf.id, trayId:newTray.id, pos:last.newLoc.pos};
-    }
-  }
-
-  if(last.oldLoc){
-    const oldShelf = state.shelves.find(s=>s.id===last.oldLoc.shelfId);
-    const oldTray  = oldShelf?.trays?.find(t=>t.id===last.oldLoc.trayId);
-    if(oldTray){
-      oldTray.slots.push({pos:last.oldLoc.pos, productKey:last.productKey});
-      oldTray.slots.sort((a,b)=>a.pos-b.pos);
-    }
-    state.locIndex[last.productKey] = last.oldLoc;
-  }else{
-    delete state.locIndex[last.productKey];
-  }
-
-  save();
-  modalAssignedCount = Math.max(0, modalAssignedCount-1);
-
-  const curTray = getSelectedTray();
-  if(curTray){
-    const typed = toInt($("modalPos").value);
-    modalAssignPos = Math.max(1, (typed ?? (last.newLoc.pos+1)) - 1);
-    if($("skipUsedToggle").checked) modalAssignPos = getNextFreePos(curTray, modalAssignPos);
-    $("modalPos").value = String(modalAssignPos);
-  }
-
-  renderTrayGrid();
-  renderTrayList();
-  renderLookup();
-  toast("Đã hoàn tác");
-});
-
-function renderModalPick(){
-  const q = norm($("modalSearch").value);
-  const list = $("modalPickList");
-  list.innerHTML = "";
-
-  if(!q){
-    $("modalEmpty").style.display = "block";
-    return;
-  }
-  $("modalEmpty").style.display = "none";
-
-  const arr = state.products
-    .filter(p=>p.key.includes(q))
-    .slice(0, 80);
-
-  if(!arr.length){
-    const p = document.createElement("p");
-    p.className = "small";
-    p.textContent = "Không thấy trong danh sách master. (Hãy nhập master ở tab Danh sách sản phẩm)";
-    list.appendChild(p);
-    return;
-  }
-
-  arr.forEach(p=>{
-    const loc = state.locIndex?.[p.key];
-    const locText = loc ? formatLoc(loc) : "Chưa gán vị trí";
-    const qv = getStockQtyByKey(p.key);
-    const qcls = qtyClass(qv);
-
-    const item = document.createElement("div");
-    item.className = "item";
-    item.innerHTML = `
-      <div class="itemTop">
-        <div>
-          <div class="name">${escapeHtml(p.name)}</div>
-          <div class="meta">${escapeHtml(locText)}</div>
-          <div class="meta">Tồn: <b class="${qcls}">${escapeHtml(fmtQty(qv))}</b></div>
-          <div class="meta small">👉 Chạm để gán vào vị trí hiện tại</div>
-        </div>
-        <div class="actions">
-          <button class="primary">Chạm để gán</button>
-        </div>
-      </div>
-    `;
-
-    const doAssign = ()=> assignQuick(p.key);
-    item.addEventListener("click", ()=> doAssign());
-    item.querySelector("button").addEventListener("click", (e)=>{ e.stopPropagation(); doAssign(); });
-
-    list.appendChild(item);
-  });
-}
-$("modalSearch").addEventListener("input", debounce(renderModalPick, 180));
-
-/* =========================
-   Tray List render
-========================= */
-function renderTrayList(){
-  const shelf = getSelectedShelf();
-  const tray = getSelectedTray();
-  const list = $("trayList");
-  list.innerHTML = "";
-
-  if(!shelf || !tray){
-    $("trayEmpty").style.display = "block";
-    $("layoutInfo").textContent = "";
-    return;
-  }
-
-  const q = norm($("traySearch").value);
-  const sort = $("traySort").value;
-
-  let arr = tray.slots.slice();
-  if(q){
-    arr = arr.filter(sl=>{
-      const name = productNameByKey(sl.productKey);
-      return norm(name).includes(q);
-    });
-  }
-
-  if(sort==="posAsc") arr.sort((a,b)=>a.pos-b.pos);
-  if(sort==="posDesc") arr.sort((a,b)=>b.pos-a.pos);
-  if(sort==="nameAsc") arr.sort((a,b)=> productNameByKey(a.productKey).localeCompare(productNameByKey(b.productKey),"vi"));
-  if(sort==="nameDesc") arr.sort((a,b)=> productNameByKey(b.productKey).localeCompare(productNameByKey(a.productKey),"vi"));
-
-  $("trayEmpty").style.display = tray.slots.length ? "none" : "block";
-  $("layoutInfo").innerHTML = `
-    <span class="tag"><strong>${escapeHtml(shelf.name)}</strong></span>
-    <span class="tag"><strong>${escapeHtml(tray.name)}</strong></span>
-    <span class="tag">Tổng SP: <strong>${tray.slots.length}</strong></span>
-  `;
-
-  arr.forEach(sl=>{
-    const prodName = productNameByKey(sl.productKey);
-    const qv = getStockQtyByKey(sl.productKey);
-    const qcls = qtyClass(qv);
-
-    const item = document.createElement("div");
-    item.className = "item";
-    item.innerHTML = `
-      <div class="itemTop">
-        <div>
-          <div class="name">${escapeHtml(prodName)}</div>
-          <div class="meta">Vị trí: <b>${sl.pos}</b></div>
-          <div class="meta">Tồn: <b class="${qcls}">${escapeHtml(fmtQty(qv))}</b></div>
-          <div class="meta mono">${escapeHtml(sl.productKey)}</div>
-        </div>
-        <div class="actions">
-          <button class="ghost" data-act="copy">📋 Copy</button>
-          <button class="ghost" data-act="move">🔁 Đổi vị trí</button>
-          <button class="danger" data-act="del">🗑️ Xoá</button>
-        </div>
-      </div>
-    `;
-
-    item.querySelector('[data-act="copy"]').addEventListener("click", async ()=>{
-      const line = `${prodName} — ${shelf.name} / ${tray.name} / Vị trí ${sl.pos} — Tồn: ${fmtQty(qv)}`;
-      try{ await navigator.clipboard.writeText(line); toast("Đã copy"); }
-      catch(e){ alert(line); }
-    });
-
-    item.querySelector('[data-act="move"]').addEventListener("click", ()=>{
-      const np = prompt(`Đổi vị trí cho "${prodName}" (hiện: ${sl.pos})`, String(sl.pos));
-      if(np===null) return;
-      const npos = toInt(np);
-      if(npos===null || npos<=0){ toast("Vị trí phải > 0"); return; }
-
-      const maxPos = Math.max(1, shelf.positionsPerTray ?? 30);
-      if(npos > maxPos){ toast("Vượt số ô của mâm"); return; }
-
-      const existed = slotAtPos(tray, npos);
-      if(existed && existed.productKey !== sl.productKey){
-        const existedName = productNameByKey(existed.productKey);
-        if(!confirm(`Vị trí ${npos} đang có "${existedName}". Thay thế?`)) return;
-        delete state.locIndex[existed.productKey];
-        tray.slots = tray.slots.filter(x=>x.pos!==npos);
-      }
-
-      sl.pos = npos;
-      tray.slots.sort((a,b)=>a.pos-b.pos);
-      state.locIndex[sl.productKey] = {shelfId:shelf.id, trayId:tray.id, pos:npos};
-      selectedPos = npos;
-      save();
-      renderTrayGrid();
-      renderTrayList();
-      renderLookup();
-      toast("Đã đổi vị trí");
-    });
-
-    item.querySelector('[data-act="del"]').addEventListener("click", ()=>{
-      if(!confirm(`Xoá "${prodName}" khỏi ${shelf.name} - ${tray.name}?`)) return;
-      tray.slots = tray.slots.filter(x=>x.productKey !== sl.productKey);
-      delete state.locIndex[sl.productKey];
-      if(selectedPos === sl.pos) selectedPos = null;
-      save();
-      renderTrayGrid();
-      renderTrayList();
-      renderLookup();
-      toast("Đã xoá");
-    });
-
-    list.appendChild(item);
-  });
-}
-
-$("traySearch").addEventListener("input", debounce(renderTrayList, 160));
-$("traySort").addEventListener("change", renderTrayList);
-
-/* =========================
-   Lookup
-========================= */
-function renderLookupShelves(){
-  const sel = $("lookupShelf");
-  const cur = sel.value;
-  sel.innerHTML = `<option value="">Tất cả kệ</option>`;
-  state.shelves.forEach(s=>{
-    const op = document.createElement("option");
-    op.value = s.id;
-    op.textContent = s.name;
-    sel.appendChild(op);
-  });
-  sel.value = cur || "";
-}
-
-function scoreMatch(qKey, pKey){
-  if(!qKey) return 0;
-  if(pKey === qKey) return 1000;
-  if(pKey.startsWith(qKey)) return 600 + qKey.length;
-  if(pKey.includes(qKey)) return 300 + qKey.length;
-  const parts = qKey.split(" ").filter(Boolean);
-  let hit=0;
-  for(const w of parts) if(pKey.includes(w)) hit++;
-  return hit ? (100 + hit*10) : 0;
-}
-
-function renderLookup(){
-  renderLookupShelves();
-
-  const q = norm($("lookupInput").value);
-  const shelfFilter = $("lookupShelf").value;
-
-  const result = $("lookupResult");
-  result.innerHTML = "";
-
-  const empty = $("lookupEmpty");
-
-  if(!q){
-    empty.textContent = "Chưa có kết quả.";
-    empty.style.display = "block";
-    return;
-  }
-
-  let pool = state.products.length ? state.products : Object.keys(state.locIndex).map(k=>({name:k, key:k}));
-
-  let scored = pool
-    .map(p=>({p, score: scoreMatch(q, p.key)}))
-    .filter(x=>x.score>0)
-    .sort((a,b)=>b.score-a.score)
-    .slice(0, 30);
-
-  if(!scored.length){
-    empty.textContent = "Không tìm thấy sản phẩm phù hợp.";
-    empty.style.display = "block";
-    return;
-  }
-
-  empty.style.display = "none";
-
-  scored.forEach(({p})=>{
-    const loc = state.locIndex?.[p.key];
-    let locText = loc ? formatLoc(loc) : "Chưa gán vị trí";
-
-    if(shelfFilter){
-      if(!loc || loc.shelfId !== shelfFilter) return;
-    }
-
-    const qv = getStockQtyByKey(p.key);
-    const qcls = qtyClass(qv);
-
-    const item = document.createElement("div");
-    item.className = "item";
-
-    item.innerHTML = `
-      <div class="itemTop">
-        <div>
-          <div class="name">${escapeHtml(p.name)}</div>
-          <div class="meta">${escapeHtml(locText)}</div>
-          <div class="meta">Tồn: <b class="${qcls}">${escapeHtml(fmtQty(qv))}</b></div>
-          <div class="meta mono">${escapeHtml(p.key)}</div>
-        </div>
-        <div class="actions">
-          <button class="ghost" data-act="copy">📋 Copy</button>
-          <button class="primary" data-act="jump">🧭 Đi tới</button>
-        </div>
-      </div>
-    `;
-
-    item.querySelector('[data-act="copy"]').addEventListener("click", async ()=>{
-      const line = `${p.name} — ${locText} — Tồn: ${fmtQty(qv)}`;
-      try{ await navigator.clipboard.writeText(line); toast("Đã copy"); }
-      catch(e){ alert(line); }
-    });
-
-    item.querySelector('[data-act="jump"]').addEventListener("click", ()=>{
-      if(!loc){ toast("Sản phẩm chưa gán vị trí"); return; }
-      document.querySelector('.tab[data-tab="layout"]').click();
-      $("shelfSelect").value = loc.shelfId;
-      ensureTraySelect();
-      $("traySelect").value = loc.trayId;
-      selectedPos = loc.pos;
-      renderTrayGrid();
-      renderTrayList();
-      toast("Đã mở đúng kệ/mâm");
-    });
-
-    result.appendChild(item);
-  });
-
-  if(!result.children.length){
-    empty.textContent = "Có kết quả nhưng không nằm trong kệ bạn đang lọc.";
-    empty.style.display = "block";
-  }
-}
-
-$("lookupInput").addEventListener("input", debounce(renderLookup, 160));
-$("lookupShelf").addEventListener("change", renderLookup);
-
-/* =========================
-   Backup
-========================= */
-$("exportBtn").addEventListener("click", ()=>{
-  const blob = new Blob([JSON.stringify(state, null, 2)], {type:"application/json;charset=utf-8"});
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = "vi-tri-san-pham-backup.json";
-  document.body.appendChild(a);
-  a.click();
-  a.remove();
-  URL.revokeObjectURL(url);
-  toast("Đã export JSON");
-});
-
-$("importBtn").addEventListener("click", ()=> $("jsonFile").click());
-$("jsonFile").addEventListener("change", async ()=>{
-  const f = $("jsonFile").files?.[0];
-  if(!f) return;
-  try{
-    const text = await f.text();
-    const obj = JSON.parse(text);
-    if(!obj || typeof obj !== "object") throw new Error("invalid");
-    obj.products ??= [];
-    obj.shelves ??= [];
-    obj.locIndex ??= {};
-    obj.stock ??= {index:{}, fileName:"", updatedAt:"", colName:"", colQty:"", rowsCount:0, keysCount:0};
-    obj.stock.index ??= {};
-    state = obj;
-    save();
-    renderAll();
-    toast("Đã import JSON");
-  }catch(e){
-    alert("File JSON không hợp lệ.");
-  }finally{
-    $("jsonFile").value = "";
-  }
-});
-
-$("resetAllBtn").addEventListener("click", ()=>{
-  if(!confirm("Xoá TẤT CẢ dữ liệu (SP + kệ + vị trí + tồn)?")) return;
-  state = {
-    products:[],
-    shelves:[],
-    locIndex:{},
-    stock:{index:{}, fileName:"", updatedAt:"", colName:"", colQty:"", rowsCount:0, keysCount:0}
-  };
-  save();
-  renderAll();
-  toast("Đã reset");
-});
-
-/* =========================
-   Layout render
-========================= */
-function renderLayout(){
-  ensureShelfSelect();
-  ensureTraySelect();
-  renderTrayGrid();
-  renderTrayList();
-  renderLookupShelves();
-
-  // enable/disable stock mapping selects based on whether we loaded raw headers in this session
-  // (if user reload page, raw rows not kept; but stock index still works)
-  if(stockHeaders.length){
-    // already enabled
-  }else{
-    // if they already have stock index saved but no session headers, keep selects disabled
-    // user can upload again to remap columns.
-  }
-}
-
-/* =========================
-   Init
-========================= */
-load();
-save();
-renderProducts();
-renderLookup();
-renderLayout();
-refreshStatus();
-
-function renderAll(){
-  refreshStatus();
-  renderProducts();
-  renderLookup();
-  renderLayout();
-}
-</script>
-</body>
-</html>
+            <
